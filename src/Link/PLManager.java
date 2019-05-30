@@ -111,13 +111,13 @@ public class PLManager {
       Query query1 = new Query(prologPl);
       System.out.println(prologPl + (query1.hasSolution() ? "Connected" : "Connection Failed"));
       ArrayList<String> result = new ArrayList<>();
-      String path = "imprimir(" + start + "," + "'" + end + "'" + ",R,Y)";
+      String path = "java(" + start + ","  + end + ",[],0,R,Y)";
       Query query2 = new Query(path);
       Map<String, Term> data = query2.oneSolution(); // recibe un solucion
       System.out.println(path);
       System.out.println(data);
       result = cleanData(getData(data.get("R").toString()));
-      System.out.println(result);
+      System.out.println("Soy este: "+result);
       return result;
     } catch (Exception e) {
       e.printStackTrace();

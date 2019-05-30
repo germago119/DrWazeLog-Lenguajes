@@ -1,5 +1,6 @@
 package GUI;
 
+import Link.PLManager;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,6 +16,8 @@ import java.io.IOException;
 
 public class Main extends Application {
   public static void main(String[] args) throws IOException {
+      PLManager n = new PLManager();
+      n.getaWay("sanjose", "[turrialba,orosi]");
     launch(args);
   }
 
