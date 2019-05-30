@@ -73,10 +73,6 @@ java(O,[C|L],R,T,R3,T3):-ruta(O,C,R1,T1), sumar(T,T1,T2),juntar(R,R1,R2),java(C,
 java(O,[C|_],R,T,R2,T2):-ruta(O,C,R1,T1), sumar(T,T1,T2),juntar(R,R1,R2), writef('Enviado').
 
 
-
-
-
-
 ruta(Inicio, Fin, Camino,Distancia) :-
 	atravesar(Inicio),
 	rpath([Fin|R], Dist)->

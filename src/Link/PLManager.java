@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class PLManager {
-
+    
+    /**
+     * @param prologOut prolog output
+     * @return returns ArrayList with all the places on the route
+     */
   private ArrayList<String> cleanData(String prologOut) {
     int length = prologOut.length();
     int i = 0;
@@ -28,8 +32,12 @@ public class PLManager {
     }
     return result;
   }
-
-  private String getData(String prologOut) {
+    
+    /**
+     * @param prologOut prolog output with extra chars
+     * @return a clean string
+     */
+    private String getData(String prologOut) {
     int length = prologOut.length();
     int i = 0;
     String result = "";
@@ -39,7 +47,8 @@ public class PLManager {
         if (tempChar.equals("(")
             || tempChar.equals(")")
             || tempChar.equals("|")
-            || tempChar.equals(",")
+            || tempChar.equals("'")
+                    || tempChar.equals(",")
             || tempChar.equals("[")
             || tempChar.equals("]")) result += "";
         else result += tempChar;
@@ -48,8 +57,12 @@ public class PLManager {
     }
     return result;
   }
-
-  public ArrayList<String> getPlaces() {
+    
+    /**
+     *
+     * @return an ArrayList with all the places from prolog file
+     */
+    public ArrayList<String> getPlaces() {
     String prologPl = "consult('Lugares.pl')"; // consulta prolog
     Query query1 = new Query(prologPl);
     System.out.println(prologPl + (query1.hasSolution() ? "Connected" : "Connection Failed"));
@@ -63,8 +76,12 @@ public class PLManager {
     System.out.println(result);
     return result;
   }
-
-  public ArrayList<ArrayList<String>> getArcs() {
+    
+    /**
+     *
+     * @return una Matriz de Arrays con todos los arcos disponibles entre los lugares
+     */
+    public ArrayList<ArrayList<String>> getArcs() {
     String prologPl = "consult('arcos.pl')"; // consulta prolog
     Query query1 = new Query(prologPl);
     System.out.println(prologPl + (query1.hasSolution() ? "Connected" : "Connection Failed"));
@@ -82,15 +99,27 @@ public class PLManager {
     System.out.println(result);
     return result;
   }
-
-  public void addPlaces(String place) throws IOException {
+    
+    /**
+     *
+     * @param place name of the place to be added
+     * @throws IOException if there is a problem with the file
+     */
+    public void addPlaces(String place) throws IOException {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter("lugares.pl", true))) {
       String newPlace = "\n" + "lugares" + "(" + place.toLowerCase() + ").";
       writer.append(newPlace);
     }
   }
-
-  public void addArcs(String start, String destiny, int distance) throws IOException {
+    
+    /**
+     *
+     * @param start name of start node
+     * @param destiny name of the end node
+     * @param distance Kilometers of distance
+     * @throws IOException if there is a problem with the fil
+     */
+    public void addArcs(String start, String destiny, int distance) throws IOException {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter("arcos.pl", true))) {
       String newArc =
           "\n"
@@ -104,15 +133,21 @@ public class PLManager {
       writer.append(newArc);
     }
   }
-
-  public ArrayList<String> getaWay(String start, String end) {
+    
+    /**
+     *
+     * @param start
+     * @param end el lugar origen del viaje
+     * @return retorna Un Array del camino mas corto
+     */
+    public ArrayList<String> getaWay(String start, String end) {
     try {
       String prologPl = "consult('Logica.pl')"; // consulta prolog
       Query query1 = new Query(prologPl);
       System.out.println(prologPl + (query1.hasSolution() ? "Connected" : "Connection Failed"));
-      ArrayList<String> result = new ArrayList<>();
-      String path = "java(" + start + ","  + end + ",[],0,R,Y)";
-      Query query2 = new Query(path);
+      ArrayList<String> result;
+        String path = "ruta(" + start + "," + end + ",R,Y)";
+        Query query2 = new Query(path);
       Map<String, Term> data = query2.oneSolution(); // recibe un solucion
       System.out.println(path);
       System.out.println(data);
@@ -121,7 +156,7 @@ public class PLManager {
       return result;
     } catch (Exception e) {
       e.printStackTrace();
-      return null;
+      return new ArrayList<>();
     }
-  }
+    }
 }

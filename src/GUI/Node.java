@@ -139,7 +139,7 @@ public class Node {
         if (drawNodes.start != null && drawNodes.end != null) {
           ArrayList<String> camino =
               plManager.getaWay(
-                  drawNodes.start.getnode_name(), "[" + drawNodes.end.getnode_name() + "]");
+                      drawNodes.start.getnode_name(), drawNodes.end.getnode_name());
           if (camino == null) {
             if (drawNodes.start.equals(drawNodes.end)) {
               Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -189,7 +189,7 @@ public class Node {
 
           ArrayList<String> camino =
               plManager.getaWay(
-                  drawNodes.start.getnode_name(), "['" + drawNodes.end.getnode_name() + "']");
+                      drawNodes.start.getnode_name(), drawNodes.end.getnode_name());
           if (camino == null) {
             if (drawNodes.end.equals(drawNodes.start)) {
               Alert alert = new Alert(Alert.AlertType.INFORMATION);
