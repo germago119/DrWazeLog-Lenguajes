@@ -116,11 +116,8 @@ public class Node {
               }
             });
       };
-  /**
-   * Este tambien es un evento y lo que hace es seleccionar el nodo que fue tocado y lo marca como
-   * un end
-   */
-  private EventHandler<ActionEvent> nodeSelectedEndEvent =
+    
+    private EventHandler<ActionEvent> nodeSelectedEndEvent =
           t -> {
         PLManager plManager = new PLManager();
               DrawNodes.end = this;
@@ -355,18 +352,18 @@ public class Node {
    */
   public ContextMenu contextMenuInit() {
     ContextMenu contextMenu = new ContextMenu();
-    MenuItem menu1 = new MenuItem("Select Start Node");
-    menu1.setOnAction(nodeOriginEvent);
-    MenuItem menu2 = new MenuItem("Select End Node");
-    menu2.setOnAction(nodeSelectedEndEvent);
-    MenuItem menu3 = new MenuItem("Add a new place");
-    menu3.setOnAction(newPlacesEvent);
-    MenuItem menu4 = new MenuItem("Add a Street");
-    menu4.setOnAction(newStreetEvent);
-    menu2.setOnAction(nodeSelectedEndEvent);
-    MenuItem menu5 = new MenuItem("Streets");
-    menu5.setOnAction(showAllStreetsEvent);
-    contextMenu.getItems().addAll(menu1, menu2, menu3, menu4, menu5);
+      MenuItem selectStartNode = new MenuItem("Select Start Node");
+      selectStartNode.setOnAction(nodeOriginEvent);
+      MenuItem selectEndNode = new MenuItem("Select End Node");
+      selectEndNode.setOnAction(nodeSelectedEndEvent);
+      MenuItem addANewPlace = new MenuItem("Add a new place");
+      addANewPlace.setOnAction(newPlacesEvent);
+      MenuItem addAStreet = new MenuItem("Add a Street");
+      addAStreet.setOnAction(newStreetEvent);
+      selectEndNode.setOnAction(nodeSelectedEndEvent);
+      MenuItem showAllStreets = new MenuItem("Show All Streets");
+      showAllStreets.setOnAction(showAllStreetsEvent);
+      contextMenu.getItems().addAll(addANewPlace, addAStreet, selectStartNode, selectEndNode, showAllStreets);
     return contextMenu;
   }
 }

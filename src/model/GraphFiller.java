@@ -24,19 +24,26 @@ public class GraphFiller {
     integers.add(25);
     integers.add(30);
     ArrayList<String> nodesList = plManager.getPlaces();
-    
-    int coordX = 50;
-    int coordY = 50;
+  
+    int coordX = 100;
+    int coordY = 100;
     for (int i = 0; i < nodesList.size(); i++) {
       if (integers.contains(i)) {
-        coordX = 50;
-        coordY = coordY + 200;
+        coordX = 100;
+        coordY += 400;
       }
+      if (i % 2 != 0) {
+        coordY += 200;
+      }
+      if (i % 2 == 0 && i != 0) {
+        coordY -= 200;
+      }
+  
       String name = nodesList.get(i);
       name = name.replaceAll("\\s+", "");
       System.out.println(nodesList.get(i));
       UINodesFactory.createNode(name, coordX, coordY);
-      coordX = coordX + 150;
+      coordX += 300;
     }
     graphFillerLines(plManager.getArcs());
   }

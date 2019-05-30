@@ -7,8 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
-
-import java.util.Random;
+import javafx.scene.text.Font;
 
 public class UINodesFactory {
   public static Pane mainPane;
@@ -18,17 +17,17 @@ public class UINodesFactory {
   }
 
   public static Node createNode(String name, int coordx, int coordy) {
-    Random rand = new Random();
     Circle ring =
         new Circle(
-            coordx, coordy, 50, Color.rgb(rand.nextInt(100), rand.nextInt(100), rand.nextInt(100)));
-    ring.setStroke(Color.rgb(rand.nextInt(100), rand.nextInt(100), rand.nextInt(100)));
+                coordx, coordy, 65, Color.web("#e7cc8f"));
+    ring.setStroke(Color.web("#efaa52"));
     ring.setStrokeWidth(4);
     Label label = new Label(name);
-    label.setTextFill(Color.WHITE);
+    label.setTextFill(Color.BLACK);
+    label.setFont(new Font(16));
     DropShadow dropShadow = new DropShadow();
     dropShadow.setOffsetY(7.0f);
-    dropShadow.setColor(Color.BLACK);
+    dropShadow.setColor(Color.WHITE);
     label.setEffect(dropShadow);
     ring.setEffect(dropShadow);
     mainPane.getChildren().addAll(ring, label);
@@ -38,17 +37,17 @@ public class UINodesFactory {
   }
 
   public static Node createNode(String name) {
-    Random rand = new Random();
     Circle ring =
         new Circle(
-            100, 100, 50, Color.rgb(rand.nextInt(100), rand.nextInt(100), rand.nextInt(100)));
-    ring.setStroke(Color.rgb(rand.nextInt(100), rand.nextInt(100), rand.nextInt(100)));
+                100, 100, 65, Color.web("#e7cc8f"));
+    ring.setStroke(Color.web("#efaa52"));
     ring.setStrokeWidth(4);
     Label label = new Label(name);
-    label.setTextFill(Color.WHITE);
+    label.setTextFill(Color.BLACK);
+    label.setFont(new Font(16));
     DropShadow dropShadow = new DropShadow();
     dropShadow.setOffsetY(7.0f);
-    dropShadow.setColor(Color.BLACK);
+    dropShadow.setColor(Color.WHITE);
     label.setEffect(dropShadow);
     ring.setEffect(dropShadow);
     mainPane.getChildren().addAll(ring, label);

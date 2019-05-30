@@ -1,6 +1,5 @@
 package GUI;
 
-import Link.PLManager;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -14,8 +13,6 @@ import model.GraphFiller;
 
 public class Main extends Application {
   public static void main (String[] args) {
-    PLManager n = new PLManager();
-    n.getaWay("sanjose", "[turrialba,orosi]");
     launch(args);
   }
 
@@ -24,9 +21,9 @@ public class Main extends Application {
     primaryStage.setTitle("DrWazeLog");
     Pane pane = new Pane();
     UINodesFactory.setMainPane(pane);
-    Scene scene = new Scene(pane, 1280, 720);
+    Scene scene = new Scene(pane, 1600, 1200);
     pane.setBackground(
-        new Background(new BackgroundFill(Color.LIGHTCORAL, CornerRadii.EMPTY, Insets.EMPTY)));
+            new Background(new BackgroundFill(Color.web("#f8f3e6"), CornerRadii.EMPTY, Insets.EMPTY)));
     primaryStage.setScene(scene);
     GraphFiller.GraphFiller();
     primaryStage.show();

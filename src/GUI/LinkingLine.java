@@ -3,9 +3,8 @@ package GUI;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import model.Graph;
-
-import java.util.Random;
 
 public class LinkingLine {
   int weight;
@@ -22,8 +21,8 @@ public class LinkingLine {
     this.linea = line;
     Graph.vertexes.add(this);
     this.start.followers.add(end);
-    Random rand = new Random();
-    line.setStroke(Color.rgb(rand.nextInt(100), rand.nextInt(100), rand.nextInt(100)));
+    weightLabel.setFont(new Font(16));
+    line.setStroke(Color.web("#ab3e16"));
     if (Graph.getArcs(end, start) != null) {
       weightLabel
           .layoutYProperty()

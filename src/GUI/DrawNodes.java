@@ -4,7 +4,6 @@ import javafx.scene.paint.Color;
 import model.Graph;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class DrawNodes {
   public static Node end;
@@ -21,7 +20,7 @@ public class DrawNodes {
       target = target.replaceAll("\\s+", "");
       Node graphNode = Graph.getNode(target);
       if (graphNode != null) {
-        graphNode.ring.setFill(Color.FORESTGREEN);
+          graphNode.ring.setFill(Color.web("#6cbf84"));
       }
       routes.add(graphNode);
     }
@@ -38,13 +37,12 @@ public class DrawNodes {
       System.out.println("connectedLinesList IS NULL");
       return;
     }
-    Random rand = new Random();
     for (Node route : routes) {
-      route.ring.setFill(Color.rgb(rand.nextInt(200), rand.nextInt(200), rand.nextInt(200)));
+        route.ring.setFill(Color.web("#709fb0"));
     }
     for (LinkingLine linkingLine : conectedLinesList) {
       linkingLine.linea.setStroke(
-              Color.rgb(rand.nextInt(200), rand.nextInt(200), rand.nextInt(200)));
+              Color.web("#726a95"));
     }
     conectedLinesList = null;
   }
@@ -52,7 +50,7 @@ public class DrawNodes {
   public static void drawLine (ArrayList<LinkingLine> line) {
     System.out.println("Lines length is " + line.size());
     for (LinkingLine linkingLine : line) {
-      linkingLine.linea.setStroke(Color.DEEPSKYBLUE);
+        linkingLine.linea.setStroke(Color.web("#6cbf84"));
       linkingLine.linea.toFront();
       linkingLine.end.ring.toFront();
       linkingLine.start.ring.toFront();
