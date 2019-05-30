@@ -12,17 +12,15 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.GraphFiller;
 
-import java.io.IOException;
-
 public class Main extends Application {
-  public static void main(String[] args) throws IOException {
-      PLManager n = new PLManager();
-      n.getaWay("sanjose", "[turrialba,orosi]");
+  public static void main (String[] args) {
+    PLManager n = new PLManager();
+    n.getaWay("sanjose", "[turrialba,orosi]");
     launch(args);
   }
 
   @Override
-  public void start(Stage primaryStage) throws Exception {
+  public void start (Stage primaryStage) {
     primaryStage.setTitle("DrWazeLog");
     Pane pane = new Pane();
     UINodesFactory.setMainPane(pane);

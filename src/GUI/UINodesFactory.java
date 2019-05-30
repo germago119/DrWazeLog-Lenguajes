@@ -34,8 +34,7 @@ public class UINodesFactory {
     mainPane.getChildren().addAll(ring, label);
     label.setLabelFor(ring);
     label.relocate(coordx - 30, coordy);
-    Node node = new Node(name, ring, label);
-    return node;
+    return new Node(name, ring, label);
   }
 
   public static Node createNode(String name) {
@@ -55,12 +54,11 @@ public class UINodesFactory {
     mainPane.getChildren().addAll(ring, label);
     label.setLabelFor(ring);
     label.relocate(70, 100);
-
-    Node node = new Node(name, ring, label);
-    return node;
+  
+    return new Node(name, ring, label);
   }
-
-  public static linkingLine createLine(Node start, Node end, int weight) {
+  
+  public static LinkingLine createLine (Node start, Node end, int weight) {
     Label label = new Label(Integer.toString(weight));
     Line line = new Line();
     DropShadow dropShadow = new DropShadow();
@@ -76,7 +74,6 @@ public class UINodesFactory {
     mainPane.getChildren().addAll(label, line);
     line.toBack();
     label.toFront();
-    linkingLine linkingLine = new linkingLine(start, end, weight, label, line);
-    return linkingLine;
+    return new LinkingLine(start, end, weight, label, line);
   }
 }

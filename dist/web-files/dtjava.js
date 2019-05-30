@@ -4,19 +4,19 @@
  */
 
 /**
-  The Java Deployment Toolkit is a utility to deploy Java content in
-  the browser as applets or applications using the right version of Java.
-  If needed it can initiate an upgrade of user's system to install required
-  components of Java platform.
-  <p>
-  Note that some of the Deployment Toolkit methods may not be fully operational if
-  used before web page body is loaded (because DT native plugins could not be instantiated).
-  If you intend to use it before web page DOM tree is ready then dtjava.js
-  needs to be loaded inside the body element of the page and before use of other DT APIs.
+ The Java Deployment Toolkit is a utility to deploy Java content in
+ the browser as applets or applications using the right version of Java.
+ If needed it can initiate an upgrade of user's system to install required
+ components of Java platform.
+ <p>
+ Note that some of the Deployment Toolkit methods may not be fully operational if
+ used before web page body is loaded (because DT native plugins could not be instantiated).
+ If you intend to use it before web page DOM tree is ready then dtjava.js
+ needs to be loaded inside the body element of the page and before use of other DT APIs.
 
-  @module java/deployment_toolkit
-*/
-var dtjava = function() {
+ @module java/deployment_toolkit
+ */
+var dtjava = function () {
     function notNull(o) {
         return (o != undefined && o != null);
     }
@@ -36,7 +36,7 @@ var dtjava = function() {
     }
 
     /* Location of static web content - images, javascript files. */
-    var jscodebase =  (function () {
+    var jscodebase = (function () {
         // <script> elements are added to the DOM and run synchronously,
         // the currently running script will also be the last element in the array
         var scripts = document.getElementsByTagName("script");
@@ -119,7 +119,7 @@ var dtjava = function() {
             // to avoid memory leaks ...
         } else if (typeof w.onload == "function") {
             var fnOld = w.onload;
-            w.onload = function() {
+            w.onload = function () {
                 fnOld();
                 fn();
             };
@@ -171,23 +171,23 @@ var dtjava = function() {
         var edge = false;
         var noActiveX = false;
         edge = (navigator.userAgent.match(/Edge/i) != null);
-        
+
         // If IE and Windows 8 or Windows 8.1 then check for Metro mode
-        if(ie && navigator.userAgent.match(/Windows NT 6\.[23]/i) != null) {
+        if (ie && navigator.userAgent.match(/Windows NT 6\.[23]/i) != null) {
             try {
                 // try to create a known ActiveX object
                 new ActiveXObject("htmlfile");
-            } catch(e) {
-		// ActiveX is disabled or not supported. 
+            } catch (e) {
+                // ActiveX is disabled or not supported.
                 noActiveX = true;
-            } 
+            }
         }
 
-        if(edge || noActiveX) {
+        if (edge || noActiveX) {
             ie = false;
-	}
+        }
 
-	var noPluginWebBrowser = edge || chrome || noActiveX;
+        var noPluginWebBrowser = edge || chrome || noActiveX;
 
         //we are not required to detect everything and can leave values null as
         // long as we later treat them accordingly.
@@ -202,22 +202,22 @@ var dtjava = function() {
             //looking for things like 10_7, 10_6_8, 10.4 in the user agent
             var t = u.match(/mac os x (10[0-9_\.]+)/);
             //normalize to "." separators
-            osVersion = notNull(t) ? t[0].replace("mac os x ","").replace(/_/g, ".") : null;
+            osVersion = notNull(t) ? t[0].replace("mac os x ", "").replace(/_/g, ".") : null;
         }
 
         // trim() is not supported by IE10 and before
-        if(typeof String.prototype.trim !== 'function') {
-           String.prototype.trim = function() {
-               return this.replace(/^\s+|\s+$/g, ''); 
-           }
+        if (typeof String.prototype.trim !== 'function') {
+            String.prototype.trim = function () {
+                return this.replace(/^\s+|\s+$/g, '');
+            }
         }
 
         // startsWith() is not supported by IE
-        if(typeof String.prototype.startsWith !== 'function') {
-           String.prototype.startsWith = function(searchString, position) {
-               position = position || 0;
-               return this.indexOf(searchString, position) === position;
-           }
+        if (typeof String.prototype.startsWith !== 'function') {
+            String.prototype.startsWith = function (searchString, position) {
+                position = position || 0;
+                return this.indexOf(searchString, position) === position;
+            }
         }
 
 
@@ -237,8 +237,7 @@ var dtjava = function() {
             deploy = __dtjavaTestHook__.deploy;
             fx = __dtjavaTestHook__.jfx;
             override = true;
-        }
-        else {
+        } else {
             //Cache configuration from plugin mimetypes
             //It is only available for NPAPI browsers
             for (var t = 0; t < mm.length; t++) {
@@ -249,9 +248,9 @@ var dtjava = function() {
                     // Use the existing version comparison mechanism to ensure that
                     // the latest JRE is selected ( "versionA"<="VersionB" equals to 
                     // versionCheck("versionA+","versionB") returns "true")
-                    if(jre == null || versionCheck(jre + "+", v)){
-			jre = v;
-	            }
+                    if (jre == null || versionCheck(jre + "+", v)) {
+                        jre = v;
+                    }
                 }
                 //Supported for 7u6 or later
                 if (m.indexOf("application/x-java-applet;deploy") != -1 && m.indexOf('=') != -1) {
@@ -263,56 +262,59 @@ var dtjava = function() {
                 }
             }
         }
-		
-        return {haveDom:dom, wk:webkit, ie:ie, win:windows,
-                linux:linux, mac:mac, op: opera, chrome:chrome, edge:edge,
-                jre:jre, deploy:deploy, fx:fx, noPluginWebBrowser:noPluginWebBrowser,
-                cputype: cputype, osVersion: osVersion, override: override};
+
+        return {
+            haveDom: dom, wk: webkit, ie: ie, win: windows,
+            linux: linux, mac: mac, op: opera, chrome: chrome, edge: edge,
+            jre: jre, deploy: deploy, fx: fx, noPluginWebBrowser: noPluginWebBrowser,
+            cputype: cputype, osVersion: osVersion, override: override
+        };
     }
 
-   function showMessageBox() {
+    function showMessageBox() {
         var message = 'Java Plug-in is not supported by this browser. <a href="https://java.com/dt-redirect">More info</a>';
         var mbStyle = 'background-color: #ffffce;text-align: left;border: solid 1px #f0c000; padding: 1.65em 1.65em .75em 0.5em; font-family: Helvetica, Arial, sans-serif; font-size: 75%; top:5;left:5;position:absolute; opacity:0.9; width:600px;';
         var messageStyle = "border: .85px; margin:-2.2em 0 0.55em 2.5em;";
 
-        var messageBox = '<img src="https://java.com/js/alert_16.png"><div style="'+ messageStyle +'"><p>'+ message + '</p>';
+        var messageBox = '<img src="https://java.com/js/alert_16.png"><div style="' + messageStyle + '"><p>' + message + '</p>';
 
 
         var divTag = document.createElement("div");
         divTag.id = "messagebox";
         divTag.setAttribute('style', mbStyle);
         divTag.innerHTML = messageBox;
-        document.body.appendChild(divTag);              
+        document.body.appendChild(divTag);
 
     }
+
     //partially derived from swfobject.js
     var initDone = false;
 
     function init() {
         if (typeof __dtjavaTestHook__ !== 'undefined') {
-          jre = null;
-          jfx = null;
-          deploy = null;
+            jre = null;
+            jfx = null;
+            deploy = null;
 
-          if ((__dtjavaTestHook__ != null) && (__dtjavaTestHook__.args != null)) {
-              jre = __dtjavaTestHook__.args.jre;
-              jfx = __dtjavaTestHook__.args.jfx;
-              deploy = __dtjavaTestHook__.args.deploy;
-          }
+            if ((__dtjavaTestHook__ != null) && (__dtjavaTestHook__.args != null)) {
+                jre = __dtjavaTestHook__.args.jre;
+                jfx = __dtjavaTestHook__.args.jfx;
+                deploy = __dtjavaTestHook__.args.deploy;
+            }
 
-          if ((window.location.href.indexOf('http://localhost') == 0) ||
-             (window.location.href.indexOf('file:///') == 0)) {
-             __dtjavaTestHook__ = {
-                detectEnv: detectEnv,
-                Version: Version,
-                checkFXSupport: checkFXSupport,
-                versionCheck: versionCheck,
-                versionCheckFX: versionCheckFX,
-                jre: jre,
-                jfx: jfx,
-                deploy: deploy
-             };
-          }
+            if ((window.location.href.indexOf('http://localhost') == 0) ||
+                (window.location.href.indexOf('file:///') == 0)) {
+                __dtjavaTestHook__ = {
+                    detectEnv: detectEnv,
+                    Version: Version,
+                    checkFXSupport: checkFXSupport,
+                    versionCheck: versionCheck,
+                    versionCheckFX: versionCheckFX,
+                    jre: jre,
+                    jfx: jfx,
+                    deploy: deploy
+                };
+            }
         }
 
         if (initDone) return;
@@ -324,7 +326,7 @@ var dtjava = function() {
 
         //NB: dtjava.js can be added dynamically and init() can be called after
         //    document onload event is fired
-        if (( isDef(d.readyState) && d.readyState == "complete") ||
+        if ((isDef(d.readyState) && d.readyState == "complete") ||
             (!isDef(d.readyState) &&
                 (d.getElementsByTagName("body")[0] || d.body))) {
             invokeCallbacks();
@@ -339,14 +341,14 @@ var dtjava = function() {
                 // http://msdn.microsoft.com/en-us/library/ie/ms536343(v=vs.85).aspx
                 // attachEvent is not supported by IE 11.
                 if (isDef(d.addEventListener)) {
-                    d.addEventListener("onreadystatechange", function() {
+                    d.addEventListener("onreadystatechange", function () {
                         if (d.readyState == "complete") {
                             d.removeEventListener("onreadystatechange", arguments.callee, false);
                             invokeCallbacks();
                         }
                     }, false);
                 } else {
-                    d.attachEvent("onreadystatechange", function() {
+                    d.attachEvent("onreadystatechange", function () {
                         if (d.readyState == "complete") {
                             d.detachEvent("onreadystatechange", arguments.callee);
                             invokeCallbacks();
@@ -354,14 +356,14 @@ var dtjava = function() {
                     });
                 }
                 if (w == top) { // if not inside an iframe
-                    (function() {
+                    (function () {
                         if (cbDone) {
                             return;
                         }
                         //AI: what for??
                         try {
                             d.documentElement.doScroll("left");
-                        } catch(e) {
+                        } catch (e) {
                             setTimeout(arguments.callee, 0);
                             return;
                         }
@@ -370,7 +372,7 @@ var dtjava = function() {
                 }
             }
             if (ua.wk) {
-                (function() {
+                (function () {
                     if (cbDone) {
                         return;
                     }
@@ -390,34 +392,34 @@ var dtjava = function() {
             installNativePlugin();
         }
     }
-    
-   function getAbsoluteUrl(jnlp){
+
+    function getAbsoluteUrl(jnlp) {
         var absoluteUrl;
-        if(isAbsoluteUrl(jnlp)) {
+        if (isAbsoluteUrl(jnlp)) {
             absoluteUrl = jnlp;
         } else {
             var location = window.location.href;
             var pos = location.lastIndexOf('/');
-            var docbase =  pos > -1 ? location.substring(0, pos + 1) : location + '/';
-	    absoluteUrl = docbase + jnlp;
+            var docbase = pos > -1 ? location.substring(0, pos + 1) : location + '/';
+            absoluteUrl = docbase + jnlp;
         }
         return absoluteUrl;
     }
 
     function launchWithJnlpProtocol(jnlp) {
-        document.location="jnlp:"+ getAbsoluteUrl(jnlp);
+        document.location = "jnlp:" + getAbsoluteUrl(jnlp);
     }
-  
 
-    function isAbsoluteUrl(url){
-       var protocols = ["http://", "https://", "file://"];
-       for (var i=0; i < protocols.length; i++){
-         if(url.toLowerCase().startsWith(protocols[i])){
-         	return true;;
-	 }
-       }
-       return false;
-     }
+
+    function isAbsoluteUrl(url) {
+        var protocols = ["http://", "https://", "file://"];
+        for (var i = 0; i < protocols.length; i++) {
+            if (url.toLowerCase().startsWith(protocols[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     /**
@@ -446,7 +448,7 @@ var dtjava = function() {
          * @return {string}
          *    Returns string replesentation of event. Useful for debugging.
          */
-        this.toString = function() {
+        this.toString = function () {
             return "MISMATCH [os=" + this.os + ", browser=" + this.browser
                 + ", jre=" + this.jre + ", fx=" + this.fx
                 + ", relaunch=" + this.relaunch + ", platform="
@@ -465,7 +467,7 @@ var dtjava = function() {
          launched and user need to use another platform to view it.
          */
 
-        this.isUnsupportedPlatform = function() {
+        this.isUnsupportedPlatform = function () {
             return this.os;
         };
 
@@ -478,7 +480,7 @@ var dtjava = function() {
          there are known supported browsers browsers for this platform.
          (but they are not necessary installed on end user system)
          */
-        this.isUnsupportedBrowser = function() {
+        this.isUnsupportedBrowser = function () {
             return this.browser;
         };
 
@@ -498,7 +500,7 @@ var dtjava = function() {
          canAutoInstall() and isRelaunchNeeded() can be used to
          get more details on how seamless user' install experience will be.
          */
-        this.jreStatus = function() {
+        this.jreStatus = function () {
             return this.jre;
         };
 
@@ -511,7 +513,7 @@ var dtjava = function() {
          * If matching java runtime is already installed or not officially supported
          * then return value is null.
          */
-        this.jreInstallerURL = function(locale) {
+        this.jreInstallerURL = function (locale) {
             if (!this.os && (this.jre == "old" || this.jre == "none")) {
                 return getJreUrl(locale);
             }
@@ -534,7 +536,7 @@ var dtjava = function() {
          canAutoInstall() and isRelaunchNeeded() can be used to
          get more details on how seamless user' install experience will be.
          */
-        this.javafxStatus = function() {
+        this.javafxStatus = function () {
             return this.fx;
         };
 
@@ -547,7 +549,7 @@ var dtjava = function() {
          * If matching JavaFX runtime is already installed or not officially supported
          * then return value is null.
          */
-        this.javafxInstallerURL = function(locale) {
+        this.javafxInstallerURL = function (locale) {
             if (!this.os && (this.fx == "old" || this.fx == "none")) {
                 return getFxUrl(locale);
             }
@@ -564,7 +566,7 @@ var dtjava = function() {
          If any of missing components need to be installed manually
          (i.e. click through additional web pages) then false is returned.
          */
-        this.canAutoInstall = function() {
+        this.canAutoInstall = function () {
             return isAutoInstallEnabled(this.platform, this.jre, this.fx);
         };
 
@@ -579,7 +581,7 @@ var dtjava = function() {
          it is known that there are supported browser for this pltaform.
          Then both isUnsupportedBrowser() and isRelaunchNeeded() return true.
          */
-        this.isRelaunchNeeded = function() {
+        this.isRelaunchNeeded = function () {
             return this.relaunch;
         };
     }
@@ -596,24 +598,25 @@ var dtjava = function() {
         if (notNull(p)) {
             try {
                 return p.getInstalledFXVersion(requestedVersion);
-            } catch(e) {}
+            } catch (e) {
+            }
         }
         return null;
     }
 
     //concatenate list with space as separator
     function listToString(lst) {
-      if (lst != null) {
-          return lst.join(" ");
-      } else {
-          return null;
-      }
+        if (lst != null) {
+            return lst.join(" ");
+        } else {
+            return null;
+        }
     }
 
     function addArgToList(lst, arg) {
         if (notNull(lst)) {
-           lst.push(arg);
-           return lst;
+            lst.push(arg);
+            return lst;
         } else {
             var res = [arg];
             return res;
@@ -622,10 +625,10 @@ var dtjava = function() {
 
     function doLaunch(ld, platform, cb) {
         var app = normalizeApp(ld, true);
-        if(ua.noPluginWebBrowser){
+        if (ua.noPluginWebBrowser) {
             launchWithJnlpProtocol(app.url);
             return;
-	}
+        }
 
         //required argument is missing
         if (!(notNull(app) && notNull(app.url))) {
@@ -638,7 +641,7 @@ var dtjava = function() {
         //normalize handlers
         cb = new dtjava.Callbacks(cb);
 
-        var launchFunc = function() {
+        var launchFunc = function () {
             //prepare jvm arguments
             var jvmArgs = notNull(platform.jvmargs) ? platform.jvmargs : null;
             if (notNull(platform.javafx)) {
@@ -668,7 +671,7 @@ var dtjava = function() {
             }
 
             //Did not launch yet? Try DT plugin (7u2+)
-            var p =  getPlugin();
+            var p = getPlugin();
             if (notNull(p)) {
                 try {
                     try {
@@ -679,7 +682,7 @@ var dtjava = function() {
                             //                   "vmargs" : [ "-ea -Djnlp.foo=bar"
                             //                   "appargs" : [ "first arg,  second arg" ]
                             //                   "params" : {"p1" : "aaa", "p2" : "bbb"}});
-                            var callArgs = {"url":app.url};
+                            var callArgs = {"url": app.url};
                             if (notNull(jvmArgs)) {
                                 callArgs["vmargs"] = jvmArgs;
                             }
@@ -715,9 +718,9 @@ var dtjava = function() {
                         return;
                     } catch (ee) { //temp  support for older build of DT
                         if (!p.launchApp(app.url, app.jnlp_content)) {
-                           if (isDef(cb.onRuntimeError)) {
-                              cb.onRuntimeError(app.id);
-                           }
+                            if (isDef(cb.onRuntimeError)) {
+                                cb.onRuntimeError(app.id);
+                            }
                         }
                         return;
                     }
@@ -734,7 +737,7 @@ var dtjava = function() {
                 //should never happen
                 d.write(o.innerHTML);
             }
-        }
+        };
 
         var r = doValidateRelaxed(platform);
         //can not launch, try to fix
@@ -826,13 +829,13 @@ var dtjava = function() {
     //returns same mismatch event if not resolved, null if resolved
     function resolveAndLaunch(app, platform, v, cb, launchFunction) {
         var p = getPlugin();
-        if( p == null && ua.noPluginWebBrowser){
-            var readyStateCheck = setInterval(function() {
-                    if(document.readyState  == "complete"){
-                        clearInterval(readyStateCheck);
-                        showMessageBox();
-                    }
-                }, 15);
+        if (p == null && ua.noPluginWebBrowser) {
+            var readyStateCheck = setInterval(function () {
+                if (document.readyState == "complete") {
+                    clearInterval(readyStateCheck);
+                    showMessageBox();
+                }
+            }, 15);
             return;
         }
         //Special case: Chrome/Windows
@@ -842,7 +845,10 @@ var dtjava = function() {
             //tell user to grant permissions and retry
             var actionLabel;
             if (notNull(app.placeholder)) {
-                var onClickFunc = function() {w.open("https://www.java.com/en/download/faq/chrome.xml"); return false;};
+                var onClickFunc = function () {
+                    w.open("https://www.java.com/en/download/faq/chrome.xml");
+                    return false;
+                };
                 var msg1 = "Please give Java permission to run on this browser web page.";
                 var msg2 = "Click for more information.";
                 var altText = "";
@@ -860,7 +866,7 @@ var dtjava = function() {
             }
 
             //now we need to start waiter. Once DT is initialized we can proceeed
-            var retryFunc = function() {
+            var retryFunc = function () {
                 var vnew = doValidateRelaxed(platform);
                 if (vnew == null) { //no problems with env
                     launchFunction();
@@ -875,7 +881,7 @@ var dtjava = function() {
 
         if (!v.isUnsupportedPlatform() && !v.isUnsupportedBrowser()) { //otherwise fatal, at least until restart of browser
             if (isMissingComponent(v) && isDef(cb.onInstallNeeded)) {
-                var resolveFunc= function() {
+                var resolveFunc = function () {
                     //once install is over we need to revalidate
                     var vnew = doValidateRelaxed(platform);
                     if (vnew == null) { //if no problems found - can launch
@@ -896,7 +902,7 @@ var dtjava = function() {
                 };
 
                 cb.onInstallNeeded(app, platform, cb,
-                            v.canAutoInstall(), v.isRelaunchNeeded(), resolveFunc);
+                    v.canAutoInstall(), v.isRelaunchNeeded(), resolveFunc);
                 return;
             }
         }
@@ -1005,7 +1011,7 @@ var dtjava = function() {
     }
 
     function doLaunchUsingDTLite(app, jvmargs, cb) {
-        var launchIt = function() {
+        var launchIt = function () {
             var pp = getDTLitePlugin();
             if (pp == null) {
                 //should not be possible as we guard before enter this function
@@ -1020,9 +1026,9 @@ var dtjava = function() {
             //                   "vmargs" : [ "-ea -Djnlp.foo=bar"
             //                   "appargs" : [ "first arg,  second arg" ]
             //                   "params" : {"p1" : "aaa", "p2" : "bbb"}});
-            var callArgs = {"url" : app.url};
+            var callArgs = {"url": app.url};
             if (notNull(jvmargs)) {
-               callArgs["vmargs"] = jvmargs;
+                callArgs["vmargs"] = jvmargs;
             }
             //Only use HTML parameters, they are supposed to overwrite values in the JNLP
             //In the future we want to pass arguments too but this needs also be exposed for
@@ -1037,7 +1043,7 @@ var dtjava = function() {
                 callArgs["params"] = ptmp;
             }
             if (notNull(app.jnlp_content)) {
-               callArgs["jnlp_content"] = app.jnlp_content;
+                callArgs["jnlp_content"] = app.jnlp_content;
             }
             var err = pp.launchApp(callArgs);
             if (err == 0) { //0 - error
@@ -1057,7 +1063,7 @@ var dtjava = function() {
     function getWebstartObject(jnlp) {
         var wo = null;
         if (ua.ie) { //TODO: attempt to use object in FF 3.6 lead to hang. Revert to embed for now
-                     //TODO: Should Chrome use object?
+            //TODO: Should Chrome use object?
             //object tag itself
             wo = d.createElement('object');
             wo.width = '1px'; //zero size reports invalid argument in IE!
@@ -1117,7 +1123,7 @@ var dtjava = function() {
         End: {value: 8}
     };
 
-    var Version = function(VersionString, UpgradeFromOldJavaVersion) {
+    var Version = function (VersionString, UpgradeFromOldJavaVersion) {
         if (typeof UpgradeFromOldJavaVersion === 'undefined') {
             var UpgradeFromOldJavaVersion = true;
         }
@@ -1140,10 +1146,9 @@ var dtjava = function() {
         // Class constructor
         if (!VersionString) {
             return null;
-        }
-        else {
+        } else {
             FVersionString = VersionString;
-            var v = parseAndSplitVersionString(VersionString, UpgradeFromOldJavaVersion)
+            var v = parseAndSplitVersionString(VersionString, UpgradeFromOldJavaVersion);
             FOld = v.old;
             FVersion = v.version;
             FBuild = v.build;
@@ -1170,11 +1175,11 @@ var dtjava = function() {
             pre: FPre,
             match: FMatch,
 
-            check: function(query) {
+            check: function (query) {
                 return check(query, this);
             },
 
-            equals: function(query) {
+            equals: function (query) {
                 return equals(query, this);
             }
         };
@@ -1207,7 +1212,7 @@ var dtjava = function() {
                 minor: lminor,
                 security: lsecurity,
                 patch: lpatch
-          };
+            };
         }
 
         function VersionStringTokenizer(versionString) {
@@ -1222,7 +1227,7 @@ var dtjava = function() {
             function isDigit(c) {
                 var result = false;
 
-                switch(c) {
+                switch (c) {
                     case '0':
                     case '1':
                     case '2':
@@ -1278,12 +1283,10 @@ var dtjava = function() {
                     tokenID = FStack[0].tokenID;
                     token = FStack[0].token;
                     FStack.shift();
-                }
-                else {
+                } else {
                     if (FIndex >= FVersionString.length) {
                         tokenID = Token.End;
-                    }
-                    else {
+                    } else {
                         while (FIndex < FVersionString.length) {
                             var c = FVersionString.charAt(FIndex);
 
@@ -1292,55 +1295,51 @@ var dtjava = function() {
                                 tokenID = Token.Alpha;
                                 FIndex++;
                                 token += c;
-                            }
-                            else if ((tokenID == Token.Uninitialized || tokenID == Token.Digits) &&
-                                     isDigit(c) == true) {
+                            } else if ((tokenID == Token.Uninitialized || tokenID == Token.Digits) &&
+                                isDigit(c) == true) {
                                 if (parseInt(c) == 0 && parseInt(token) == 0) {
                                     tokenID = Token.Unknown;
                                     token += c;
                                     FIndex++;
                                     break;
-                                }
-                                else {
+                                } else {
                                     tokenID = Token.Digits;
                                     token += c;
                                     FIndex++;
                                 }
-                            }
-                            else if ((tokenID == Token.Alpha || tokenID == Token.Identifier) &&
-                                     isDigit(c) == true &&
-                                     isLetter(c) == false) {
+                            } else if ((tokenID == Token.Alpha || tokenID == Token.Identifier) &&
+                                isDigit(c) == true &&
+                                isLetter(c) == false) {
                                 tokenID = Token.Identifier;
                                 FIndex++;
                                 token += c;
-                            }
-                            else if (tokenID == Token.Uninitialized) {
-                                switch(c) {
+                            } else if (tokenID == Token.Uninitialized) {
+                                switch (c) {
                                     case '-':
-                                      tokenID = Token.Minus;
-                                      FIndex++;
-                                      token = c;
-                                      break;
+                                        tokenID = Token.Minus;
+                                        FIndex++;
+                                        token = c;
+                                        break;
                                     case '+':
-                                      tokenID = Token.Plus;
-                                      FIndex++;
-                                      token = c;
-                                      break;
+                                        tokenID = Token.Plus;
+                                        FIndex++;
+                                        token = c;
+                                        break;
                                     case '*':
-                                      tokenID = Token.Star;
-                                      FIndex++;
-                                      token = c;
-                                      break;
+                                        tokenID = Token.Star;
+                                        FIndex++;
+                                        token = c;
+                                        break;
                                     case '.':
-                                      tokenID = Token.Dot;
-                                      FIndex++;
-                                      token = c;
-                                      break;
+                                        tokenID = Token.Dot;
+                                        FIndex++;
+                                        token = c;
+                                        break;
                                     case '_':
-                                      tokenID = Token.Underbar;
-                                      FIndex++;
-                                      token = c;
-                                      break;
+                                        tokenID = Token.Underbar;
+                                        FIndex++;
+                                        token = c;
+                                        break;
                                     default:
                                         tokenID = Token.Unknown;
                                         FIndex++;
@@ -1348,9 +1347,8 @@ var dtjava = function() {
                                 }
 
                                 break;
-                            }
-                            else {
-                              break;
+                            } else {
+                                break;
                             }
                         }
                     }
@@ -1359,7 +1357,7 @@ var dtjava = function() {
                 FCurrentToken = {
                     token: token,
                     tokenID: tokenID
-                }
+                };
 
                 return FCurrentToken;
             }
@@ -1376,7 +1374,7 @@ var dtjava = function() {
 
         function VersionStringParser() {
             function readDigits(Tokenizer) {
-                var result = new Array();
+                var result = [];
                 var token = Tokenizer.currentToken();
 
                 if (token.tokenID == Token.Digits) {
@@ -1391,26 +1389,22 @@ var dtjava = function() {
                             if (token.tokenID == Token.Digits) {
                                 result.push(parseInt(token.token));
                                 token = Tokenizer.nextToken();
-                            }
-                            else if (token.tokenID == Token.Star ||
-                                     token.tokenID == Token.Plus) {
+                            } else if (token.tokenID == Token.Star ||
+                                token.tokenID == Token.Plus) {
                                 break;
-                            }
-                            else {
+                            } else {
                                 result = null;
                                 break;
                             }
-                        }
-                        else if (token.tokenID == Token.Star ||
-                                 token.tokenID == Token.Plus ||
-                                 token.tokenID == Token.End ||
-                                 token.tokenID == Token.Minus ||
-                                 token.tokenID == Token.Underbar ||
-                                 token.tokenID == Token.Identifier ||
-                                 (token.tokenID == Token.Alpha && token.token == 'u')) {
+                        } else if (token.tokenID == Token.Star ||
+                            token.tokenID == Token.Plus ||
+                            token.tokenID == Token.End ||
+                            token.tokenID == Token.Minus ||
+                            token.tokenID == Token.Underbar ||
+                            token.tokenID == Token.Identifier ||
+                            (token.tokenID == Token.Alpha && token.token == 'u')) {
                             break;
-                        }
-                        else {
+                        } else {
                             result = null;
                             break;
                         }
@@ -1430,17 +1424,14 @@ var dtjava = function() {
                     if (token.tokenID == Token.Star) {
                         result = Match.Family;
                         Tokenizer.nextToken();
-                    }
-                    else if (token.tokenID == Token.Plus) {
+                    } else if (token.tokenID == Token.Plus) {
                         result = Match.Above;
                         Tokenizer.nextToken();
                     }
-                }
-                else if (token.tokenID == Token.Star) {
+                } else if (token.tokenID == Token.Star) {
                     result = Match.Family;
                     Tokenizer.nextToken();
-                }
-                else if (token.tokenID == Token.Plus) {
+                } else if (token.tokenID == Token.Plus) {
                     result = Match.Above;
                     Tokenizer.nextToken();
                 }
@@ -1459,8 +1450,7 @@ var dtjava = function() {
                     if (token.tokenID == Token.Alpha) {
                         result = token.token;
                         Tokenizer.nextToken();
-                    }
-                    else {
+                    } else {
                         Tokenizer.pushToken(savedToken);
                     }
                 }
@@ -1481,12 +1471,10 @@ var dtjava = function() {
                     if (token.tokenID == Token.Digits) {
                         result = parseInt(token.token);
                         Tokenizer.nextToken();
-                    }
-                    else {
+                    } else {
                         Tokenizer.pushToken(savedToken);
                     }
-                }
-                else if (Old == true) {
+                } else if (Old == true) {
                     // The old version spec has build number prepended with a "-b"
                     // RegEx: -b([1-9][0-9]*)
                     if (token.tokenID == Token.Minus || token.tokenID == Token.Underbar) {
@@ -1500,8 +1488,7 @@ var dtjava = function() {
                                 Tokenizer.nextToken();
                                 result = builderNumber;
                             }
-                        }
-                        else {
+                        } else {
                             Tokenizer.pushToken(savedToken);
                         }
                     }
@@ -1534,12 +1521,10 @@ var dtjava = function() {
                 if (token.tokenID == Token.Identifier) {
                     result = parseInt(token.token.substr(1));
                     Tokenizer.nextToken();
-                }
-                else if (token.tokenID == Token.Star) {
+                } else if (token.tokenID == Token.Star) {
                     lmatch = Match.Family;
                     Tokenizer.nextToken();
-                }
-                else if (token.tokenID == Token.Plus) {
+                } else if (token.tokenID == Token.Plus) {
                     lmatch = Match.Above;
                     Tokenizer.nextToken();
                 }
@@ -1585,8 +1570,7 @@ var dtjava = function() {
                             }
 
                             lold = true;
-                        }
-                        else if (token.token == "u") {
+                        } else if (token.token == "u") {
                             // Special case. For Example: 8u*
                             token = Tokenizer.nextToken();
                         }
@@ -1602,8 +1586,7 @@ var dtjava = function() {
 
                                 if (token.tokenID == Token.End) {
                                     success = true;
-                                }
-                                else {
+                                } else {
                                     lmatch = readMatch(Tokenizer);
                                     token = Tokenizer.currentToken();
 
@@ -1612,8 +1595,7 @@ var dtjava = function() {
                                     }
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             token = Tokenizer.currentToken();
 
                             if (lold == true && token.tokenID == Token.Underbar) {
@@ -1661,7 +1643,7 @@ var dtjava = function() {
 
         function parseAndSplitVersionString(versionString, UpgradeFromOldJavaVersion) {
             var lold = false;
-            var lversion = new Array;
+            var lversion = [];
             var lbuild = null;
             var lmatch = null;
             var lpre = false;
@@ -1670,8 +1652,7 @@ var dtjava = function() {
             // Corner case inputs.
             if (versionString == null || versionString.length == 0) {
                 lversion = [0, 0, 0, 0];
-            }
-            else {
+            } else {
                 var tokenizer = VersionStringTokenizer(versionString);
                 var parser = VersionStringParser();
                 var result = parser.parse(tokenizer);
@@ -1682,14 +1663,12 @@ var dtjava = function() {
                         if (result.version.length > 0 &&
                             result.version[0] == 1) {
                             lversion = result.version.splice(1, result.version.length - 1);
-                        }
-                        else {
+                        } else {
                             lversion = result.version;
                         }
 
                         lold = true;
-                    }
-                    else {
+                    } else {
                         lversion = result.version;
                     }
 
@@ -1756,18 +1735,16 @@ var dtjava = function() {
             // since the query string is all 0s, or empty, we have a match.
             if (query.old == true && query.version.length == 0 && version.old == true) {
                 result = true;
-            }
-            else {
+            } else {
                 // All elements must match on the query version array.
-                for (index = 0 ;index < query.version.length && index < version.version.length;
+                for (index = 0; index < query.version.length && index < version.version.length;
                      index++) {
                     var q = query.version[index];
                     var v = version.version[index];
 
                     if (parseInt(q) == parseInt(v)) {
                         result = true;
-                    }
-                    else {
+                    } else {
                         result = false;
                         break;
                     }
@@ -1784,14 +1761,11 @@ var dtjava = function() {
 
             if (query.old == true && query.version.length == 0) {
                 result = true;
-            }
-            else if (query.old == true && version.old == false) {
+            } else if (query.old == true && version.old == false) {
                 result = true;
-            }
-            else if (query.major == 0) {
+            } else if (query.major == 0) {
                 result = true;
-            }
-            else if ((query.major != null) &&
+            } else if ((query.major != null) &&
                 (version.major != null) &&
                 ((parseInt(query.build) == parseInt(version.build)) || (query.build == null && version.build == null))) {
 
@@ -1801,16 +1775,14 @@ var dtjava = function() {
 
                     if (parseInt(q) == parseInt(v)) {
                         result = true;
-                    }
-                    else if (parseInt(q) < parseInt(v)) {
+                    } else if (parseInt(q) < parseInt(v)) {
                         if ((query.old == true && version.old == true) ||
                             (query.old == false && version.old == false)) {
                             result = true;
                         }
 
                         break;
-                    }
-                    else {
+                    } else {
                         result = false;
                         break;
                     }
@@ -1827,7 +1799,7 @@ var dtjava = function() {
 
             // The source version string must be a complete version string (four digits).
             // Example: 9.0.0.0
-            for (var index = clone_version.length; index < 4 ; index++) {
+            for (var index = clone_version.length; index < 4; index++) {
                 clone_version.push(0);
             }
 
@@ -1852,18 +1824,15 @@ var dtjava = function() {
 
             if (query.VersionString == null || query.VersionString.length == 0) {
                 result = true;
-            }
-            else {
+            } else {
                 if (query.build == null && version.build == null) {
                     var lversion = cloneAndCompleteVersionInfo(version);
 
                     if (query.match == Match.Exact) {
                         result = compareVersionExact(query, lversion);
-                    }
-                    else if (query.match == Match.Family) {
+                    } else if (query.match == Match.Family) {
                         result = compareVersionFamily(query, lversion);
-                    }
-                    else if (query.match == Match.Above) {
+                    } else if (query.match == Match.Above) {
                         result = compareVersionAbove(query, lversion);
                     }
                 }
@@ -1879,8 +1848,7 @@ var dtjava = function() {
 
             if (query.VersionString == null || query.VersionString.length == 0) {
                 result = true;
-            }
-            else {
+            } else {
                 var lversion = cloneAndCompleteVersionInfo(version);
                 var lquery = cloneAndCompleteVersionInfo(query);
                 result = compareVersionExact(lquery, lversion);
@@ -1933,20 +1901,20 @@ var dtjava = function() {
     //    DT plugin if we can (as old DT may make it not possible to autostart)
     function doublecheckJrePresence() {
         if (!haveDTLite()) { //basically IE on windows or Old JRE on windows
-          if (postponeNativePluginInstallation && notNull(d.body)) {
-              // Native Plugin installation was postponed, as the page didn't have
-              // body at that time. Try to install the plugin now.
-              installNativePlugin();
-              postponeNativePluginInstallation = false;
-          }
-          var p = getPlugin();
-          if (p != null) {
-            return true;
-            //WORKAROUND: bug in native DT!!! TODO: What version? bypass for it only
-            //return (p.jvms.getLength() > 0);
-          }
+            if (postponeNativePluginInstallation && notNull(d.body)) {
+                // Native Plugin installation was postponed, as the page didn't have
+                // body at that time. Try to install the plugin now.
+                installNativePlugin();
+                postponeNativePluginInstallation = false;
+            }
+            var p = getPlugin();
+            if (p != null) {
+                return true;
+                //WORKAROUND: bug in native DT!!! TODO: What version? bypass for it only
+                //return (p.jvms.getLength() > 0);
+            }
 
-          return false;
+            return false;
         }
 
         //if we are not using native DT plugin (i.e. using DTLite) then no way we can do sanity check
@@ -1958,7 +1926,7 @@ var dtjava = function() {
         // Check if latest JRE is exposed in mimetype and if it is good enough (only for NPAPI browsers)
         if (ua.jre != null) {
             if (versionCheck(jre, ua.jre)) {
-               return "ok";
+                return "ok";
             }
             //Note: if we have JRE but it is not match that means we may need an upgrade message
             // but we still could be able to get more accurate answer with native DT plugin
@@ -2033,9 +2001,9 @@ var dtjava = function() {
     function isUnsupportedVersionOfIE() {
         if (ua.ie) {
             try {
-              //these functions are defined in IE only
-              var v = 10*ScriptEngineMajorVersion() + ScriptEngineMinorVersion();
-              if (v < 57) return true; //IE7 will have 57
+                //these functions are defined in IE only
+                var v = 10 * ScriptEngineMajorVersion() + ScriptEngineMinorVersion();
+                if (v < 57) return true; //IE7 will have 57
             } catch (err) {
                 //really old IE?
                 return true;
@@ -2077,7 +2045,7 @@ var dtjava = function() {
         if (notNull(v) && v.length > 0) {
             var c = v.charAt(v.length - 1);
             if (c == '*') {
-              v = v.substring(0, v.length - 1)+"+";
+                v = v.substring(0, v.length - 1) + "+";
             } else if (c != '+') { //exact version (e.g. 1.6)
                 v = v + "+";
             }
@@ -2122,9 +2090,9 @@ var dtjava = function() {
             if (details.os) {
                 jre = "unsupported";
                 os = true;
-            } else if(noPluginWebBrowser) {
-		jre = "ok";
-	    } else {
+            } else if (noPluginWebBrowser) {
+                jre = "ok";
+            } else {
                 browser = details.browser;
             }
         }
@@ -2133,50 +2101,50 @@ var dtjava = function() {
         if (notNull(platform.javafx)) {
             details = checkFXSupport();
             if (details.os) { //FX is not supported,
-                              //do not even try
+                //do not even try
                 fx = "unsupported";
                 os = os || details.os;
-            } else if(noPluginWebBrowser) {
+            } else if (noPluginWebBrowser) {
                 fx = "ok";
-	    } else if( details.browser) {
+            } else if (details.browser) {
                 browser = browser || details.browser;
             } else {
                 //on non windows platforms automated install is not possible
                 // (if it is needed on windows and possible we will set it to false later)
 
                 if (ua.fx != null) {
-                  //found cobundled JavaFX on 7u6+ (and it is NPAPI-based browser)
-                  if (versionCheckFX(platform.javafx, ua.fx)) {
+                    //found cobundled JavaFX on 7u6+ (and it is NPAPI-based browser)
+                    if (versionCheckFX(platform.javafx, ua.fx)) {
                         fx = "ok";
-                  } else if (versionCheckFX("2.0+", ua.fx)) {
+                    } else if (versionCheckFX("2.0+", ua.fx)) {
                         fx = "old";
-                  }
+                    }
                 } else if (ua.win) { //could be 7u6(cobundle)/IE or JRE6/FX
-                  try {
-                    p = getPlugin();
-                    //typeof did not work in IE
-                    var v = p.getInstalledFXVersion(platform.javafx);
-                    // If not found then try for the latest family (e.g. if the requested FX version is "2.2" and "8.0.5" is installed
-                    // we should not report that FX is old or does not exist. Instead we should continue with "8.0.5" and than either relaunch
-                    // with the requested JRE or offer the user to launch the app using the latest JRE installed).
-                    if (v == "" || v == null) {
-                        v = p.getInstalledFXVersion(platform.javafx + '+');
-                    }
-                    //if found we should get version string, otherwise empty string or null. If found then fx=false!
-                    if (v == "" || v == null) {
-                        v = p.getInstalledFXVersion("2.0+"); //check for any FX version
-                        if (v == null || v == "") {
-                            fx = "none";
-                        } else {
-                            fx = "old";
+                    try {
+                        p = getPlugin();
+                        //typeof did not work in IE
+                        var v = p.getInstalledFXVersion(platform.javafx);
+                        // If not found then try for the latest family (e.g. if the requested FX version is "2.2" and "8.0.5" is installed
+                        // we should not report that FX is old or does not exist. Instead we should continue with "8.0.5" and than either relaunch
+                        // with the requested JRE or offer the user to launch the app using the latest JRE installed).
+                        if (v == "" || v == null) {
+                            v = p.getInstalledFXVersion(platform.javafx + '+');
                         }
+                        //if found we should get version string, otherwise empty string or null. If found then fx=false!
+                        if (v == "" || v == null) {
+                            v = p.getInstalledFXVersion("2.0+"); //check for any FX version
+                            if (v == null || v == "") {
+                                fx = "none";
+                            } else {
+                                fx = "old";
+                            }
+                        }
+                    } catch (err) {
+                        //If we got here then environment is supported but
+                        //this is non FX aware JRE => no FX and can only offer manual install
+                        // (restart needed as toolkit is already loaded)
+                        fx = "none";
                     }
-                  } catch(err) {
-                    //If we got here then environment is supported but
-                    //this is non FX aware JRE => no FX and can only offer manual install
-                    // (restart needed as toolkit is already loaded)
-                    fx = "none";
-                  }
                 } else if (ua.mac || ua.linux) {
                     fx = "none";
                 }
@@ -2191,14 +2159,18 @@ var dtjava = function() {
         //we need to return null if everything is ok. Check for problems.
         if (fx != "ok" || jre != "ok" || restart || os || browser) {
             return new PlatformMismatchEvent(
-                {fx: fx, jre: jre, relaunch: restart, os: os, browser: browser,
-                    platform: platform});
+                {
+                    fx: fx, jre: jre, relaunch: restart, os: os, browser: browser,
+                    platform: platform
+                });
         } else {
             //if all looks good check JRE again, it could be false positive
             if (ua.override == false && !noPluginWebBrowser && !doublecheckJrePresence()) {
-               return new PlatformMismatchEvent(
-                 {fx: fx, jre: "none", relaunch: restart, os: os,
-                     browser: browser, platform: platform});
+                return new PlatformMismatchEvent(
+                    {
+                        fx: fx, jre: "none", relaunch: restart, os: os,
+                        browser: browser, platform: platform
+                    });
             }
         }
 
@@ -2243,7 +2215,7 @@ var dtjava = function() {
             var fx = v.javafxStatus();
             //if anything is disabled then this need to be resolved before any further installs
             return (jre == "none" || fx == "none" || jre == "old" || fx == "old")
-               && (fx != "disabled" && jre != "disabled");
+                && (fx != "disabled" && jre != "disabled");
         }
         return false;
     }
@@ -2263,13 +2235,13 @@ var dtjava = function() {
         if (isUpgrade) {
             msg1 = "A newer version of " + productName + "is required to view the content on this page.";
             msg2 = "Please click here to update " + productName;
-            imgName = "upgrade_"+productLabel+".png";
+            imgName = "upgrade_" + productLabel + ".png";
         } else {
             msg1 = "View the content on this page.";
             msg2 = "Please click here to install " + productName;
-            imgName = "get_"+productLabel+".png";
+            imgName = "get_" + productLabel + ".png";
         }
-        var altText = "Click to install "+productName;
+        var altText = "Click to install " + productName;
 
         doShowMessageInTheArea(ld, msg1, msg2, altText, imgName, actionFunc);
     }
@@ -2281,21 +2253,24 @@ var dtjava = function() {
         r.height = normalizeDimension(ld.height);
 
         var lnk = d.createElement("a");
-        lnk.href="";
-        lnk.onclick = function() {actionFunc(); return false;};
+        lnk.href = "";
+        lnk.onclick = function () {
+            actionFunc();
+            return false;
+        };
         if (ld.width < 250 || ld.height < 160) { //if relative size this will fail =>
-                                                 // will choose image
+            // will choose image
             r.appendChild(
-               d.createElement("p").appendChild(
-                  d.createTextNode(msg1)));
+                d.createElement("p").appendChild(
+                    d.createTextNode(msg1)));
             lnk.appendChild(d.createTextNode(msg2));
             r.appendChild(lnk);
         } else {
             var img = d.createElement("img");
             img.src = jscodebase + imgName;
             img.alt = altText;
-            img.style.borderWidth="0px";
-            img.style.borderStyle="none";
+            img.style.borderWidth = "0px";
+            img.style.borderStyle = "none";
 //FIXME: centering image does not work (in a way it also work with relative dimensions ...)
 //            lnk.style.top="50%";
 //            lnk.style.left="50%";
@@ -2319,7 +2294,7 @@ var dtjava = function() {
 
     function defaultInstallHandler(app, platform, cb,
                                    isAutoinstall, needRelaunch, launchFunc) {
-        var installFunc = function() {
+        var installFunc = function () {
             doInstall(app, platform, cb, launchFunc);
         };
 
@@ -2334,33 +2309,33 @@ var dtjava = function() {
         if (notNull(app.placeholder)) { //embedded
             if (canJavaFXCoBundleSatisfy(platform)) { //if both JRE and FX are missing we will start install from JRE
                 //it is only JRE that needs to be updated
-               showClickToInstall(app, true, isUpgrade, isAutoinstall, needRelaunch, installFunc);
+                showClickToInstall(app, true, isUpgrade, isAutoinstall, needRelaunch, installFunc);
             } else {
-               showClickToInstall(app, (s.jreStatus() != "ok"), isUpgrade, isAutoinstall, needRelaunch, installFunc);
+                showClickToInstall(app, (s.jreStatus() != "ok"), isUpgrade, isAutoinstall, needRelaunch, installFunc);
             }
         } else { //webstart
-          var r = isAutoinstall;
-          var msg = null;
-          if (!r) {
-             if (canJavaFXCoBundleSatisfy(platform)) { //if both JRE and FX are missing we will start install from JRE
-                 //it is only JRE that needs to be updated
-                 if (isUpgrade) {
-                     msg = "A newer version of Java is required to view the content on this page. Please click here to update Java.";
-                 } else {
-                     msg = "To view the content on this page, please click here to install Java.";
-                 }
-                 r = confirm(msg);
-             } else {
-                 if (isUpgrade) {
-                     msg = "A newer version of JavaFX is required to view the content on this page. Please click here to update JavaFX.";
-                 } else {
-                     msg = "To view the content on this page, please click here to install JavaFX.";
-                 }
-                 r = confirm(msg);
-             }
-          }
-          if (r)
-             installFunc();
+            var r = isAutoinstall;
+            var msg = null;
+            if (!r) {
+                if (canJavaFXCoBundleSatisfy(platform)) { //if both JRE and FX are missing we will start install from JRE
+                    //it is only JRE that needs to be updated
+                    if (isUpgrade) {
+                        msg = "A newer version of Java is required to view the content on this page. Please click here to update Java.";
+                    } else {
+                        msg = "To view the content on this page, please click here to install Java.";
+                    }
+                    r = confirm(msg);
+                } else {
+                    if (isUpgrade) {
+                        msg = "A newer version of JavaFX is required to view the content on this page. Please click here to update JavaFX.";
+                    } else {
+                        msg = "To view the content on this page, please click here to install JavaFX.";
+                    }
+                    r = confirm(msg);
+                }
+            }
+            if (r)
+                installFunc();
         }
     }
 
@@ -2377,30 +2352,30 @@ var dtjava = function() {
      */
     function enableWithoutCertMisMatchWorkaround(requestedJREVersion) {
 
-       // Non-IE browser are okay
-       if (!ua.ie) return true;
+        // Non-IE browser are okay
+        if (!ua.ie) return true;
 
-       // if DT plugin is 10.0.0 or above, return true
-       // This is because they are aware of both SUN and Oracle signature and
-       // will not show cert mismatch dialog that might cause deadlock
-       if (versionCheck("10.0.0+", getPlugin().version, false)) {
-          return true;
-       }
+        // if DT plugin is 10.0.0 or above, return true
+        // This is because they are aware of both SUN and Oracle signature and
+        // will not show cert mismatch dialog that might cause deadlock
+        if (versionCheck("10.0.0+", getPlugin().version, false)) {
+            return true;
+        }
 
-       // If we got there, DT plugin is 6uX
+        // If we got there, DT plugin is 6uX
 
-       if (requestedJREVersion  == null) {
-          // if requestedJREVersion is not defined - it means ANY.
-          // can not guarantee it is safe to install ANY version because 6uX
-          // DT does not know about Oracle certificates and may deadlock
-          return false;
-       }
+        if (requestedJREVersion == null) {
+            // if requestedJREVersion is not defined - it means ANY.
+            // can not guarantee it is safe to install ANY version because 6uX
+            // DT does not know about Oracle certificates and may deadlock
+            return false;
+        }
 
-       // 6u32 or earlier JRE installer used Sun certificate
-       // 6u33+ uses Oracle's certificate
-       // DT in JRE6 does not know about Oracle certificate => can only
-       // install 6u32 or earlier without risk of deadlock
-       return !versionCheck("1.6.0_33+", requestedJREVersion);
+        // 6u32 or earlier JRE installer used Sun certificate
+        // 6u33+ uses Oracle's certificate
+        // DT in JRE6 does not know about Oracle certificate => can only
+        // install 6u32 or earlier without risk of deadlock
+        return !versionCheck("1.6.0_33+", requestedJREVersion);
     }
 
     // return true if we can auto-install to satisfy the platform requirement
@@ -2414,23 +2389,23 @@ var dtjava = function() {
     //   - if FX install is required, JRE co-bundle can satisfy the
     //       requirement or DT plugin supports FX auto-install
     function isAutoInstallEnabled(platform, jre, fx) {
-       // auto-install is windows only
-       if (!ua.win) return false;
+        // auto-install is windows only
+        if (!ua.win) return false;
 
-       // if no DT plugin, return false
-       // if DT plugin is there but not operational (e.g. blocked)
-       //  then pretend there is no autoinstall
-       var p = getPlugin();
-       if (p == null || !isDef(p.version)) return false;
+        // if no DT plugin, return false
+        // if DT plugin is there but not operational (e.g. blocked)
+        //  then pretend there is no autoinstall
+        var p = getPlugin();
+        if (p == null || !isDef(p.version)) return false;
 
-       if (jre != "ok") {
-           // need JRE install
-           if (!enableWithoutCertMisMatchWorkaround(platform.jvm)) {
-               return false;
-           }
-       }
+        if (jre != "ok") {
+            // need JRE install
+            if (!enableWithoutCertMisMatchWorkaround(platform.jvm)) {
+                return false;
+            }
+        }
 
-       if (fx != "ok") {
+        if (fx != "ok") {
             if (!canJavaFXCoBundleSatisfy(platform)) {
                 // no cobundle, check if there is standalone FX auto-install
                 // DT from Java 7 or later should be ok
@@ -2465,11 +2440,11 @@ var dtjava = function() {
             if (s.jre != "ok") {
                 if (isDef(cb.onInstallStarted)) {
                     cb.onInstallStarted(placeholder, "Java",
-                                        false, getPlugin() != null);
+                        false, getPlugin() != null);
                 }
                 startManualJREInstall();
             } else { //what it could be??
-              reportPlatformError(app, s, cb);
+                reportPlatformError(app, s, cb);
             }
         } else {
             //nothing to install
@@ -2511,8 +2486,8 @@ var dtjava = function() {
             img.style.position = "relative";
             img.style.top = "50%";
             img.style.left = "50%";
-            img.style.marginTop =  normalizeDimension(-iH/2);
-            img.style.marginLeft = normalizeDimension(-iW/2);
+            img.style.marginTop = normalizeDimension(-iH / 2);
+            img.style.marginLeft = normalizeDimension(-iW / 2);
 
             return img;
         } else {
@@ -2533,7 +2508,7 @@ var dtjava = function() {
 
     //remove all child elements for given node
     function wipe(c) {
-        while(c.hasChildNodes()) c.removeChild(c.firstChild);
+        while (c.hasChildNodes()) c.removeChild(c.firstChild);
     }
 
     function defaultInstallStartedHandler(placeholder, component, isAuto, restartNeeded) {
@@ -2541,7 +2516,7 @@ var dtjava = function() {
             var code = null;
             if (isAuto) {
                 code = (component == "JavaFX") ?
-                    "install:inprogress:javafx": "install:inprogress:jre";
+                    "install:inprogress:javafx" : "install:inprogress:jre";
             } else {
                 code = (component == "JavaFX") ?
                     "install:inprogress:javafx:manual" : "install:inprogress:jre:manual";
@@ -2560,10 +2535,10 @@ var dtjava = function() {
                     //need to request to install JRE first
                     msg = "install:fx:error:nojre";
                 } else {
-                    msg = "install:fx:"+status;
+                    msg = "install:fx:" + status;
                 }
             } else { //must be JRE error
-                msg = "install:jre:"+status;
+                msg = "install:jre:" + status;
             }
             if (placeholder != null) {
                 t = appletErrorMsg(msg, null);
@@ -2614,7 +2589,10 @@ var dtjava = function() {
 
         if (getErrorDiv(id) != null) {
             showAppletError(id, "launch:fx:generic:embedded",
-                function() {showHideApplet(findAppletDiv(id), false); return false;});
+                function () {
+                    showHideApplet(findAppletDiv(id), false);
+                    return false;
+                });
         } else {
             w.alert(webstartErrorMsg("launch:fx:generic"));
         }
@@ -2641,7 +2619,7 @@ var dtjava = function() {
         //can not install plugin now as page has no body yet, postpone
         //NB: use cbDone here to avoid infinite recursion (corner case)
         if (!notNull(d.body) && !cbDone) {
-            addOnDomReadyInternal(function() {
+            addOnDomReadyInternal(function () {
                 installNativePlugin();
             });
             postponeNativePluginInstallation = true;
@@ -2652,7 +2630,7 @@ var dtjava = function() {
         if (ua.ie) {
             p = d.createElement('object');
             //TODO: zero size does not work?? How we can make it less intrusive for layout?
-            p.width  = '1px';
+            p.width = '1px';
             p.height = '1px';
             //new CLSID, one with 0000-0000 had been kill bit
             p.classid = 'clsid:CAFEEFAC-DEC7-0000-0001-ABCDEFFEDCBA';
@@ -2716,9 +2694,11 @@ var dtjava = function() {
         r.height = normalizeDimension(ld.height);
 
         //things added unconditionally
-        var sparams = {"jnlp_href" : ld.url,
-            "java_status_events" : true,
-            "type" : "application/x-java-applet"};
+        var sparams = {
+            "jnlp_href": ld.url,
+            "java_status_events": true,
+            "type": "application/x-java-applet"
+        };
 
         if (notNull(ld.jnlp_content)) {
             sparams['jnlp_embedded'] = ld.jnlp_content;
@@ -2727,7 +2707,7 @@ var dtjava = function() {
             //for swing applications embedding FX we do not want this property as it will
             // trigger FX toolkit and lead to app failure!
             if (!notNull(ld.toolkit) || ld.toolkit == "fx") {
-               sparams["javafx_version"] = ((platform.javafx == "*") ? "2.0+" : platform.javafx);
+                sparams["javafx_version"] = ((platform.javafx == "*") ? "2.0+" : platform.javafx);
             }
             //FX requires new VM per applet, do it unconditionally
             sparams["separate_jvm"] = true;
@@ -2822,82 +2802,83 @@ var dtjava = function() {
 
             //show applet first and then hide splash to avoid blinking
             showHideDiv(d.getElementById(id + "-splash"), true);
-        } catch(err) {}
+        } catch (err) {
+        }
     }
 
     var javafxURL = "https://java.com/javafx";
 
     //TODO: validate ALL messages are shown as expected and when expected (for applet/webstart/install)
     var errorMessages = {
-        "launch:fx:generic" : ["JavaFX application could not launch due to system configuration.",
+        "launch:fx:generic": ["JavaFX application could not launch due to system configuration.",
             " See ", "a", "https://java.com/javafx", "java.com/javafx",
             " for troubleshooting information."],
-        "launch:fx:generic:embedded" : ["JavaFX application could not launch due to system configuration ",
+        "launch:fx:generic:embedded": ["JavaFX application could not launch due to system configuration ",
             "(", "onclick", "show error details", ").",
             " See ", "a", "https://java.com/javafx", "java.com/javafx",
             " for troubleshooting information."],
-        "install:fx:restart" : ["Restart your browser to complete the JavaFX installation,",
+        "install:fx:restart": ["Restart your browser to complete the JavaFX installation,",
             " then return to this page."],
-        "install:fx:error:generic" : ["JavaFX install not completed.",
+        "install:fx:error:generic": ["JavaFX install not completed.",
             " See ", "a", "https://java.com/javafx", "java.com/javafx",
             " for troubleshooting information."],
-        "install:fx:error:download" : ["JavaFX install could not start because of a download error.",
+        "install:fx:error:download": ["JavaFX install could not start because of a download error.",
             " See ", "a", "https://java.com/javafx", "java.com/javafx",
             " for troubleshooting information."],
-        "install:fx:error:cancelled" : ["JavaFX install was cancelled.",
+        "install:fx:error:cancelled": ["JavaFX install was cancelled.",
             " Reload the page and click on the download button to try again."],
-        "install:jre:error:cancelled" : ["Java install was cancelled.",
+        "install:jre:error:cancelled": ["Java install was cancelled.",
             " Reload the page and click on the download button to try again."],
-        "install:jre:error:generic" : ["Java install not completed.",
+        "install:jre:error:generic": ["Java install not completed.",
             " See ", "a", "https://java.com/", "java.com",
             " for troubleshooting information."],
-        "install:jre:error:download" : ["Java install could not start because of a download error.",
+        "install:jre:error:download": ["Java install could not start because of a download error.",
             " See ", "a", "https://java.com/", "java.com/",
             " for troubleshooting information."],
-        "install:inprogress:jre" : ["Java install in progress."],
-        "install:inprogress:javafx" : ["JavaFX install in progress."],
-        "install:inprogress:javafx:manual" : ["Please download and run JavaFX Setup from ",
+        "install:inprogress:jre": ["Java install in progress."],
+        "install:inprogress:javafx": ["JavaFX install in progress."],
+        "install:inprogress:javafx:manual": ["Please download and run JavaFX Setup from ",
             "a", getFxUrl(null), "java.com/javafx",
             ". When complete, restart your browser to finish the installation,",
             " then return to this page."],
-        "install:inprogress:jre:manual" : ["Please download and run Java Setup from ",
+        "install:inprogress:jre:manual": ["Please download and run Java Setup from ",
             "a", getJreUrl(), "java.com/download",
             ". When complete, reload the page."],
-        "install:fx:error:nojre" : ["b", "Installation failed.", "br",
+        "install:fx:error:nojre": ["b", "Installation failed.", "br",
             "Java Runtime is required to install JavaFX and view this content. ",
             "a", getJreUrl(), "Download Java Runtime",
             " and run the installer. Then reload the page to install JavaFX."],
-        "browser":    [ 'Content can not be displayed using your Web browser. Please open this page using another browser.'],
-        "jre:none":    [ 'JavaFX application requires a recent Java runtime. Please download and install the latest JRE from ',
+        "browser": ['Content can not be displayed using your Web browser. Please open this page using another browser.'],
+        "jre:none": ['JavaFX application requires a recent Java runtime. Please download and install the latest JRE from ',
             'a', 'https://java.com', "java.com", '.'],
-        "jre:old" :    [ 'JavaFX application requires a recent Java runtime. Please download and install the latest JRE from ',
+        "jre:old": ['JavaFX application requires a recent Java runtime. Please download and install the latest JRE from ',
             'a', 'https://java.com', "java.com", '.'],
-        "jre:plugin":  ['b', "A Java plugin is required to view this content.", 'br',
+        "jre:plugin": ['b', "A Java plugin is required to view this content.", 'br',
             "Make sure that ", "a", 'https://java.com', "a recent Java runtime",
             " is installed, and the Java plugin is enabled."],
         "jre:blocked": ["Please give Java permission to run. This will allow Java to present content provided on this page."],
         "jre:unsupported": ["b", "Java is required to view this content but Java is currently unsupported on this platform.",
             "br", "Please consult ", "a", "https://java.com", "the Java documentation",
             " for list of supported platforms."],
-        "jre:browser" : ["b", "Java plugin is required to view this content but Java plugin is currently unsupported in this browser.",
+        "jre:browser": ["b", "Java plugin is required to view this content but Java plugin is currently unsupported in this browser.",
             "br", "Please try to launch this application using other browser. Please consult ",
             "a", "https://java.com", "the Java documentation",
             " for list of supported browsers for your OS."],
-        "javafx:unsupported" : ["b", "JavaFX 2.0 is required to view this content but JavaFX is currently unsupported on this platform.",
+        "javafx:unsupported": ["b", "JavaFX 2.0 is required to view this content but JavaFX is currently unsupported on this platform.",
             "br", "Please consult ", "a", javafxURL, "the JavaFX documentation",
             " for list of supported platforms."],
-        "javafx:old" :    [ 'This application requires newer version of JavaFX runtime. ',
+        "javafx:old": ['This application requires newer version of JavaFX runtime. ',
             'Please download and install the latest JavaFX Runtime from ',
             'a', javafxURL, "java.com/javafx", '.'],
-        "javafx:none" : ["b", "JavaFX 2.0 is required to view this content.",
+        "javafx:none": ["b", "JavaFX 2.0 is required to view this content.",
             "br", "a", javafxURL, "Get the JavaFX runtime from java.com/javafx",
             " and run the installer. Then restart the browser."],
-        "javafx:disabled" : ["JavaFX is disabled. Please open Java Control Panel, switch to Advanced tab and enable it. ",
+        "javafx:disabled": ["JavaFX is disabled. Please open Java Control Panel, switch to Advanced tab and enable it. ",
             "Then restart the browser."],
-        "jre:oldplugin" : ["New generation Java plugin is required to view this content." +
-                " Please open Java Control Panel and enable New Generation Java Plugin."],
-        "jre:disabled" : ["Java plugin appear to be disabled in your browser. ",
-                " Please enable Java in the browser options."]
+        "jre:oldplugin": ["New generation Java plugin is required to view this content." +
+        " Please open Java Control Panel and enable New Generation Java Plugin."],
+        "jre:disabled": ["Java plugin appear to be disabled in your browser. ",
+            " Please enable Java in the browser options."]
     };
 
     //assume we get list of (tag, param, text) where both param and tag are optional
@@ -2934,7 +2915,9 @@ var dtjava = function() {
                     el = d.createElement("a");
                     el.href = "";
                     if (onClickFunc == null) {
-                       onClickFunc = function() {return false;}
+                        onClickFunc = function () {
+                            return false;
+                        }
                     }
                     el.onclick = onClickFunc;
                     el.appendChild(d.createTextNode(lst[i + 1]));
@@ -2955,16 +2938,16 @@ var dtjava = function() {
         var lst = errorMessages[code];
         var i = 0;
         if (notNull(lst)) {
-          while (i < lst.length) {
-              if (lst[i] != 'a' && lst[i] != 'br' && lst[i] != 'b') {
-                  m += lst[i];
-              } else if (lst[i] == 'a') { //next element is link => skip it
-                  i++;
-              }
-              i++;
-          }
+            while (i < lst.length) {
+                if (lst[i] != 'a' && lst[i] != 'br' && lst[i] != 'b') {
+                    m += lst[i];
+                } else if (lst[i] == 'a') { //next element is link => skip it
+                    i++;
+                }
+                i++;
+            }
         } else {
-            m = "Unknown error: ["+code+"]";
+            m = "Unknown error: [" + code + "]";
         }
         return m;
     }
@@ -2988,7 +2971,7 @@ var dtjava = function() {
         pane.style.visibility = "visible";
 
         //hide splash and applet
-        showHideDiv(d.getElementById(id+"-splash"), true);
+        showHideDiv(d.getElementById(id + "-splash"), true);
         showHideApplet(findAppletDiv(id), true);
     }
 
@@ -3003,7 +2986,7 @@ var dtjava = function() {
         img.style.cssFloat = "left";
         img.style.styleFloat = "left"; //IE way
         img.style.margin = "0px 10px 60px 10px";
-        img.style.verticalAlign="text-top";
+        img.style.verticalAlign = "text-top";
 
         var m = errorMessages[code];
         //error message is missing => show code as fallback
@@ -3014,13 +2997,14 @@ var dtjava = function() {
         var hideFunc = null;
 
         if (isDef(onclickFunc)) {
-            hideFunc = function() {
+            hideFunc = function () {
                 if (notNull(out.parentNode)) {
-                  out.parentNode.removeChild(out);
+                    out.parentNode.removeChild(out);
                 }
                 try {
                     onclickFunc();
-                } catch (e) {}
+                } catch (e) {
+                }
                 return false;
             }
         }
@@ -3115,7 +3099,7 @@ var dtjava = function() {
         if (cb == null) {
             cb = pendingCallbacks[id];
             if (notNull(cb)) {
-              pendingCallbacks[id] = null;
+                pendingCallbacks[id] = null;
             } else {
                 return;
             }
@@ -3126,29 +3110,29 @@ var dtjava = function() {
         if (isDef(cb.onJavascriptReady)) {
             var onReady = cb.onJavascriptReady;
             if (a.status < 2) { //not READY yet
-              a.onLoad = function() {
-                  onReady(id);
-                  a.onLoad = null; //workaround bug in plugin for IE in JRE7
-              }
+                a.onLoad = function () {
+                    onReady(id);
+                    a.onLoad = null; //workaround bug in plugin for IE in JRE7
+                }
             }
         }
 
         if (isDef(cb.onRuntimeError)) {
             if (a.status < 3) { //not ERROR or READY yet
-               a.onError = function() {
-                  cb.onRuntimeError(id);
-                  //This used to be added as
-                  //  "workaround bug in plugin for IE in JRE7"
-                  //I do not have recollection what the bug was
-                  // and can not reproduce it now
-                  //(perhaps multiple calls into callback?)
-                  //With FX 2.0 it cause restart of the applet in IE
-                  // for reason that is not completely clear
-                  //Disable it for now
-                  /*   a.onError = null; */
-              }
+                a.onError = function () {
+                    cb.onRuntimeError(id);
+                    //This used to be added as
+                    //  "workaround bug in plugin for IE in JRE7"
+                    //I do not have recollection what the bug was
+                    // and can not reproduce it now
+                    //(perhaps multiple calls into callback?)
+                    //With FX 2.0 it cause restart of the applet in IE
+                    // for reason that is not completely clear
+                    //Disable it for now
+                    /*   a.onError = null; */
+                }
             } else if (a.status == 3) { //already failed, call handler in place
-               cb.onRuntimeError(id);
+                cb.onRuntimeError(id);
             }
         }
     }
@@ -3170,7 +3154,7 @@ var dtjava = function() {
 
         var s = d.createElement("script");
         pendingCallbacks[id] = cb;
-        s.text = "dtjava.installCallbacks('"+id+"')";
+        s.text = "dtjava.installCallbacks('" + id + "')";
         return s;
     }
 
@@ -3184,7 +3168,7 @@ var dtjava = function() {
         var app = normalizeApp(ld, false);
         //required argument is missing
         if (!(notNull(app) && notNull(app.url) &&
-              notNull(app.width) && notNull(app.height) && notNull(app.placeholder))) {
+            notNull(app.width) && notNull(app.height) && notNull(app.placeholder))) {
             //deployment error, not runtime => exception is ok
             throw "Required attributes are missing! (url, width, height and placeholder are required)";
         }
@@ -3193,10 +3177,10 @@ var dtjava = function() {
 
         //if placeholder is passed as id => find DOM node
         if ((typeof app.placeholder == "string")) {
-           var p = d.getElementById(app.placeholder);
-           if (p == null) {
-               throw "Application placeholder [id="+app.placeholder+"] not found.";
-           }
+            var p = d.getElementById(app.placeholder);
+            if (p == null) {
+                throw "Application placeholder [id=" + app.placeholder + "] not found.";
+            }
             app.placeholder = p;
         }
 
@@ -3212,7 +3196,7 @@ var dtjava = function() {
         //allow family match to match next family
         //Once we get to java layer we will deal with it there
         var v = doValidateRelaxed(platform);
-        var launchFunction = function() {
+        var launchFunction = function () {
             var appSnippet = getAppletSnippet(app, platform, cb);
             var splashSnippet = (cb.onGetSplash == null) ? null : cb.onGetSplash(ld);
 
@@ -3241,7 +3225,9 @@ var dtjava = function() {
             //if (cbSnippet != null) {
             //    app.placeholder.appendChild(cbSnippet);
             //}
-            setTimeout(function() {doInstallCallbacks(app.id, cb)}, 0);
+            setTimeout(function () {
+                doInstallCallbacks(app.id, cb)
+            }, 0);
         };
 
         //can not launch yet
@@ -3277,7 +3263,7 @@ var dtjava = function() {
         //Ensure some platform is set
         platform = new dtjava.Platform(platform);
 
-        var launchFunc = function() {
+        var launchFunc = function () {
             //add error pane
             app.placeholder.insertBefore(getErrorPaneSnippet(app), a);
 
@@ -3299,7 +3285,7 @@ var dtjava = function() {
             // but if detection was not possible then it is hard to do
             //they always wotk for FX or jre 7+ but how validate this?
             //otherwise attempt to set them will block js and then trigger exception ...
-        }
+        };
 
         var v = doValidateRelaxed(platform);
         if (v != null) {
@@ -3320,7 +3306,7 @@ var dtjava = function() {
 
     function doRegister(id, platform, cb) {
         //we will record static object and process it once onload is done
-        addOnDomReady(function() {
+        addOnDomReady(function () {
             processStaticObject(id, platform, cb);
         });
     }
@@ -3369,7 +3355,7 @@ var dtjava = function() {
          Returns null if all requirements are met.
          Return PlatformMismatchEvent describing the problem otherwise.
          */
-        validate: function(platform) {
+        validate: function (platform) {
             return doValidate(platform, ua.noPluginWebBrowser);
         },
 
@@ -3387,7 +3373,7 @@ var dtjava = function() {
          Returns true if install was initiated.
 
          */
-        install: function(platform, callbacks) {
+        install: function (platform, callbacks) {
             return doInstall(null, platform, callbacks, null);
         },
 
@@ -3420,8 +3406,8 @@ var dtjava = function() {
          @param callbacks {Callbacks | array}
          Optional set of callbacks. See Callbacks for details.
          */
-            //this will not use jvargs either but we do not necessary need to document it
-        launch: function(ld, platform, callbacks) {
+        //this will not use jvargs either but we do not necessary need to document it
+        launch: function (ld, platform, callbacks) {
             return doLaunch(ld, platform, callbacks);
         },
 
@@ -3453,7 +3439,7 @@ var dtjava = function() {
          Optional set of callbacks. See Callbacks for details.
          @return {void}
          */
-        embed: function(ld, platform, cb) {
+        embed: function (ld, platform, cb) {
             return doEmbed(ld, platform, cb);
         },
 
@@ -3474,7 +3460,7 @@ var dtjava = function() {
          @param cb {Callbacks | array}
          Optional set of callbacks. See Callbacks for details.
          */
-        register: function(id, platform, callbacks) {
+        register: function (id, platform, callbacks) {
             return doRegister(id, platform, callbacks);
         },
 
@@ -3489,7 +3475,7 @@ var dtjava = function() {
          * @method hideSplash
          * @param id    Identifier of applet whose splash panel need to be hidden
          */
-        hideSplash: function(id) {
+        hideSplash: function (id) {
             return doHideSplash(id);
         },
 
@@ -3517,7 +3503,7 @@ var dtjava = function() {
          @param strictMode {boolean} Flag indicating whether page assets need to
          be loaded before launch (default is false).
          */
-        addOnloadCallback: function(fn, strictMode) {
+        addOnloadCallback: function (fn, strictMode) {
             //WORKAROUND for RT-21574
             // avoid using onDomReady because it leads to deadlocks
             if (strictMode || (ua.chrome && !ua.win)) {
@@ -3536,7 +3522,7 @@ var dtjava = function() {
          * @param cb {array}  Set of callbacks. If null then pending callbacks are installed (if any for this applet).
          * @private
          */
-        installCallbacks: function(id, cb) {
+        installCallbacks: function (id, cb) {
             doInstallCallbacks(id, cb);
         },
 
@@ -3570,7 +3556,7 @@ var dtjava = function() {
          Array describing platform requirements. Element names should match
          Platform properties.
          */
-        Platform: function(r) {
+        Platform: function (r) {
             //init with defaults
 
             /**
@@ -3612,14 +3598,14 @@ var dtjava = function() {
                 }
             }
 
-           /**
+            /**
              * @method toString
              * @return {string}
              *    Returns string replesentation of platform spec. Useful for debugging.
              */
-            this.toString = function() {
+            this.toString = function () {
                 return "Platform [jvm=" + this.jvm + ", javafx=" + this.javafx
-                + ", plugin=" + this.plugin + ", jvmargs=" + this.jvmargs + "]";
+                    + ", plugin=" + this.plugin + ", jvmargs=" + this.jvmargs + "]";
             };
         },
 
@@ -3636,7 +3622,7 @@ var dtjava = function() {
          (Optional) set of values for other object properties.
          Name should match documented object properties.
          */
-        App: function(url, details) {
+        App: function (url, details) {
             /**
              Location of application's JNLP file.  Can not be null or undefined.
              @property url
@@ -3722,10 +3708,10 @@ var dtjava = function() {
                 this.placeholder = details.placeholder;
 
                 /**
-                  Tookit used by the application.
-                  By default it is "fx" (and null is treated as JavaFX too).
-                  Swing applications embedding JavaFX components need to pass "swing"
-                */
+                 Tookit used by the application.
+                 By default it is "fx" (and null is treated as JavaFX too).
+                 Swing applications embedding JavaFX components need to pass "swing"
+                 */
                 this.toolkit = details.toolkit;
             }
 
@@ -3734,7 +3720,7 @@ var dtjava = function() {
              *
              * @return {string}
              */
-            this.toString = function() {
+            this.toString = function () {
                 var pstr = "null";
                 var first = true;
                 if (notNull(this.params)) {
@@ -3762,7 +3748,7 @@ var dtjava = function() {
          @param cb {list of callbacks}
          set of callbacks to set
          */
-        Callbacks: function(cb) {
+        Callbacks: function (cb) {
             /**
              Callback to be called to obtain content of the splash panel. Gets application
              launch descriptor as an input. If null is returned then splash is disabled.
@@ -3801,25 +3787,25 @@ var dtjava = function() {
              Parameters:
              <ul>
              <li> <b>app</b> - application launch descriptor.
-                 For embedded applications app.placeholder will refer to
-                 the root of the applet area in the DOM tree (to be used for
-                 visual feedback)
+             For embedded applications app.placeholder will refer to
+             the root of the applet area in the DOM tree (to be used for
+             visual feedback)
              <li> <b>platform</b> - application platform requirements
              <li> <b>cb</b> - set of callbacks to be used during
-                   installation process
+             installation process
              <li> <b>isAutoinstall</b> - true if install can be launched
-                 automatically
+             automatically
              <li> <b>needRestart</b> - true if browser restart will be required
-                 once installation is complete
+             once installation is complete
              <li> <b>launchFunction</b> - function to be executed to
-                 retry launching the application once installation is finished
+             retry launching the application once installation is finished
              </ul>
 
              @property onInstallNeeded
              @type function(app, platform, cb, isAutoinstall, needRelaunch, launchFunc)
              @default Default implementation shows "click to install" banner
-               for embedded applications or initiates installation immediately
-               for applications launched from web page.
+             for embedded applications or initiates installation immediately
+             for applications launched from web page.
              */
             this.onInstallNeeded = defaultInstallHandler;
 
@@ -3842,12 +3828,12 @@ var dtjava = function() {
              Parameters:
              <ul>
              <li> <b>placeholder</b> - DOM element to insert visual feedback into.
-                  If null then callee need to add visual feedback to the document on its own
-                  (e.g. placeholder will be null if installation is not happening in context of embedding application into
-                  web page).
+             If null then callee need to add visual feedback to the document on its own
+             (e.g. placeholder will be null if installation is not happening in context of embedding application into
+             web page).
              <li> <b>component</b> - String "Java", "JavaFX" or "Java bundle"
              <li> <b>isAutoInstall</b> - true if installer will be launched
-                  automatically
+             automatically
              <li> <b>restartNeeded</b> - boolean to specify whether browser restart will be required
              </ul>
 
@@ -3865,7 +3851,7 @@ var dtjava = function() {
              Parameters:
              <ul>
              <li> <b>placeholder</b> - DOM element that was passed to
-                 onInstallStarted to insert visual feedback into.
+             onInstallStarted to insert visual feedback into.
              <li> <b>component</b> - String "jre" or "javafx"
              <li> <b>status</b> - status code is string categorizing the status of install.
              ("success", "error:generic", "error:download" or "error:canceled")
@@ -3897,7 +3883,7 @@ var dtjava = function() {
              <li><em>JRE is not detected and need to be installed</em> - (r.jreStatus() == "none")
              <li><em>Installed version of JRE does not match requirements</em> - (r.jreStatus() == "old")
              <li><em>Matching JRE is detected but deprecated Java plugin is used and
-                     it does not support JNLP applets</em> - (r.jreStatus() == "oldplugin")
+             it does not support JNLP applets</em> - (r.jreStatus() == "oldplugin")
              </ul>
              <li> JavaFX specific codes
              <ul>

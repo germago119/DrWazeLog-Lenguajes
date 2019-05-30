@@ -1,13 +1,11 @@
 package GUI;
 
-
-public class newInput {
+class NewInput {
   String newName;
   String endName;
   String weight;
-
- 
-  public newInput(String newName, String endName, String arc) {
+  
+  NewInput (String newName, String endName, String arc) {
     this.endName = endName;
     this.newName = newName;
     this.weight = arc;

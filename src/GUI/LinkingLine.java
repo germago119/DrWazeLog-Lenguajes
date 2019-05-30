@@ -7,14 +7,14 @@ import model.Graph;
 
 import java.util.Random;
 
-public class linkingLine {
-  public int weight;
+public class LinkingLine {
+  int weight;
   public Node start;
   public Node end;
   public Label weightLabel;
-  public Line linea;
-
-  public linkingLine(Node start, Node end, int weight, Label weightLabel, Line line) {
+  Line linea;
+  
+  LinkingLine (Node start, Node end, int weight, Label weightLabel, Line line) {
     this.start = start;
     this.end = end;
     this.weight = weight;
