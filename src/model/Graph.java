@@ -13,6 +13,37 @@ public class Graph {
   public static ArrayList<LinkingLine> vertexes = new ArrayList<>();
   
   /**
+   * @param start node at the start of the street
+   * @param end   node at the end of the street
+   * @return the LinkingLine(arc) between two nodes
+   */
+  public static LinkingLine getArcs (Node start, Node end) {
+    for (LinkingLine vertex : vertexes) {
+      if (vertex.start.equals(start) && vertex.end.equals(end)) {
+        return vertex;
+      }
+    }
+    return null;
+  }
+  
+  /**
+   * It gets all the arcs to a route
+   *
+   * @param ways list of nodes of a route
+   * @return a list that matches arcs to the route
+   */
+  public static ArrayList<LinkingLine> getLines (ArrayList<Node> ways) {
+    int x = ways.size();
+    int i = 0;
+    ArrayList<LinkingLine> linkingLines = new ArrayList<>();
+    while (i < x - 1) {
+      linkingLines.add(getArcs(ways.get(i), ways.get(i + 1)));
+      i++;
+    }
+    return linkingLines;
+  }
+  
+  /**
    * Retrieves all nodes' names except the argument
    * @param toIgnore node name to be discarded
    * @return An arraylist with almost all nodes' names
@@ -59,34 +90,5 @@ public class Graph {
     return null;
   }
   
-  /**
-   * @param start node at the start of the street
-   * @param end   node at the end of the street
-   * @return the LinkingLine(arc) between two nodes
-   */
-  public static LinkingLine getArcs (Node start, Node end) {
-    for (LinkingLine vertex : vertexes) {
-      if (vertex.start.equals(start) && vertex.end.equals(end)) {
-        return vertex;
-      }
-    }
-    return null;
-  }
-  
-  /**
-   * It gets all the arcs to a route
-   *
-   * @param ways list of nodes of a route
-   * @return a list that matches arcs to the route
-   */
-  public static ArrayList<LinkingLine> getLines (ArrayList<Node> ways) {
-    int x = ways.size();
-    int i = 0;
-    ArrayList<LinkingLine> linkingLines = new ArrayList<>();
-    while (i < x - 1) {
-      linkingLines.add(getArcs(ways.get(i), ways.get(i + 1)));
-      i++;
-    }
-    return linkingLines;
-  }
+ 
 }

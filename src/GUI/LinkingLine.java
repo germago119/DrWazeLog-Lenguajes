@@ -13,6 +13,14 @@ public class LinkingLine {
   public Label weightLabel;
   Line linea;
   
+  /**
+   * It uses all these parameters to create a line with all the data it needs to display a street
+   * @param start first node
+   * @param end last node
+   * @param weight distance number
+   * @param weightLabel label displaying distance
+   * @param line
+   */
   LinkingLine (Node start, Node end, int weight, Label weightLabel, Line line) {
     this.start = start;
     this.end = end;

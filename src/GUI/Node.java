@@ -24,10 +24,9 @@ public class Node {
     public double posSceneX, posSceneY;
   public ArrayList<Node> followers = new ArrayList<>();
   private String nodeName;
-    /**
-   * Este es el evento que determina cuando es presionado un nodo, lo cual lo manda hacia en frente
-   * del scene
-   */
+   
+   /**Handles drag position updates
+    */
   private EventHandler<MouseEvent> mousePressedEventHandler =
       (event) -> {
           posSceneX = event.getSceneX();
@@ -36,7 +35,9 @@ public class Node {
         tempRing.toFront();
         label.toFront();
       };
-  // Test
+  
+  /**Creates the window for adding new places
+    */
   private EventHandler<ActionEvent> newPlacesEvent =
       (t) -> {
           Dialog<NewInput> dialog = new Dialog<>();
@@ -116,7 +117,9 @@ public class Node {
               }
             });
       };
-    
+  
+    /**It manages the node selected as end of the route
+    */
     private EventHandler<ActionEvent> nodeSelectedEndEvent =
           t -> {
         PLManager plManager = new PLManager();
@@ -164,7 +167,9 @@ public class Node {
                   DrawNodes.drawTheWay(route);
         }
       };
-  /** Este evento lo que hace es definir el nodo como un start */
+    
+    /**It manages the node selected as origin for the route and other functions
+     */
   private EventHandler<ActionEvent> nodeOriginEvent =
           t -> {
         PLManager plManager = new PLManager();
@@ -211,7 +216,9 @@ public class Node {
                   DrawNodes.drawTheWay(route);
         }
       };
-  /** Esta lo que hace es crear una calle entre dos destinos, genera la ventana de seleccion */
+    
+    /**It manages the window for creating a new street
+     */
   private EventHandler<ActionEvent> newStreetEvent =
           t -> {
         ArrayList<String> nodesNameList = Graph.getNames(this.nodeName);
@@ -285,7 +292,9 @@ public class Node {
               }
             });
       };
-
+    
+    /**It manages the window that shows all the streets
+     */
   private EventHandler<ActionEvent> showAllStreetsEvent =
           t -> {
         VBox box = new VBox(8);
@@ -305,13 +314,20 @@ public class Node {
         dialogPane.setContent(box);
         dialog.showAndWait();
       };
-  /** Esta lo que hace es desplegar el menu de contexto */
+    
+    /**It manages the context menu itself
+     */
   private EventHandler<ContextMenuEvent> contextHandler =
       (event) -> {
         ContextMenu contextMenu = contextMenuInit();
         contextMenu.show(this.ring, event.getScreenX(), event.getScreenY());
       };
     
+    /**Constructor for the class
+     * @param text Node's name
+     * @param ring JavaFX Circle
+     * @param label Text inside Circle that shows the node Name
+     */
     public Node(String text, Circle ring, Label label) {
 
     this.label = label;
@@ -340,16 +356,15 @@ public class Node {
     this.label.setOnContextMenuRequested(contextHandler);
     this.label.setOnMouseDragged(mouseDraggedEventHandler);
   }
-
+    
+    /**@return the Node Object name
+     */
   public String getnode_name() {
     return nodeName;
   }
-
-  /**
-   * Esta lo que hace es crear un menucontexto
-   *
-   * @return
-   */
+    
+    /** Creates the context Menu and adds the menu items
+     */
   public ContextMenu contextMenuInit() {
     ContextMenu contextMenu = new ContextMenu();
       MenuItem selectStartNode = new MenuItem("Select Start Node");
